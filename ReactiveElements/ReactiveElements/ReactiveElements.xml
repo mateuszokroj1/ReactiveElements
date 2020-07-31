@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ReactiveElements</name>
+    </assembly>
+    <members>
+        <member name="M:ReactiveElements.ExtensionMethods.GetReactiveProperty``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            Get <see cref="T:ReactiveElements.ReactiveProperty`1"/> generated from property in <paramref name="model"/> that implements <see cref="T:System.ComponentModel.INotifyPropertyChanged"/>
+            </summary>
+            <typeparam name="TModel">Model that implements <see cref="T:System.ComponentModel.INotifyPropertyChanged"/></typeparam>
+            <typeparam name="TProperty">Selected property type</typeparam>
+            <param name="model">Model that implements <see cref="T:System.ComponentModel.INotifyPropertyChanged"/></param>
+            <param name="propertySelector">Expression with selected property from current model</param>
+            <returns>Generated <see cref="T:ReactiveElements.ReactiveProperty`1"/></returns>
+            <exception cref="T:System.ArgumentNullException" />
+            <exception cref="T:System.ArgumentException" />
+            <exception cref="T:System.MemberAccessException" />
+        </member>
+        <member name="T:ReactiveElements.IReadonlyReactiveProperty`1">
+            <summary>
+            Interface for ReadonlyReactiveProperty class
+            </summary>
+            <typeparam name="T">Type of property value</typeparam>
+        </member>
+        <member name="P:ReactiveElements.IReadonlyReactiveProperty`1.Value">
+            <summary>
+            Represents current value of property
+            </summary>
+        </member>
+        <member name="M:ReactiveElements.IReadonlyReactiveProperty`1.GetValue">
+            <summary>
+            Returns current value of property
+            </summary>
+        </member>
+        <member name="M:ReactiveElements.Observable.TimedValueComparer`1.#ctor(System.Func{`0},System.TimeSpan,System.Threading.SynchronizationContext)">
+            <summary>
+            Creates new instance of <see cref="T:ReactiveElements.Observable.TimedValueComparer`1"/>, that checks the value of function in setted period.
+            </summary>
+            <exception cref="T:System.ArgumentNullException" />
+            <exception cref="T:System.ArgumentOutOfRangeException" />
+            <exception cref="T:System.Runtime.InteropServices.ExternalException" />
+        </member>
+        <member name="M:ReactiveElements.Observable.TimedValueComparer`1.#ctor(System.Func{`0},System.TimeSpan)">
+            <summary>
+            Creates new instance of <see cref="T:ReactiveElements.Observable.TimedValueComparer`1"/>, that checks the value of function in setted period.
+            </summary>
+            <exception cref="T:System.ArgumentNullException" />
+            <exception cref="T:System.ArgumentOutOfRangeException" />
+            <exception cref="T:System.Runtime.InteropServices.ExternalException" />
+        </member>
+        <member name="M:ReactiveElements.Observable.TimedValueComparer`1.NotifySubscribers">
+            <summary>
+            Notifies registered observers about new value
+            </summary>
+        </member>
+        <member name="M:ReactiveElements.Observable.TimedValueComparer`1.UpdateValue">
+            <summary>
+            Updates value with FuncToCheck
+            </summary>
+            <exception cref="T:System.Runtime.InteropServices.ExternalException" />
+        </member>
+        <member name="E:ReactiveElements.ReactiveCommand.CanExecuteChanged">
+            <summary>
+            Notifies about CanExecute change.
+            </summary>
+        </member>
+        <member name="M:ReactiveElements.ReactiveProperty`1.SetValue(System.Object)">
+            <exception cref="T:System.ArgumentException" />
+        </member>
+        <member name="E:ReactiveElements.ReadonlyReactiveProperty`1.PropertyChanged">
+            <summary>
+            Notifies about changes in properties
+            </summary>
+        </member>
+        <member name="M:ReactiveElements.ReadonlyReactiveProperty`1.SetValue(System.Object)">
+            <exception cref="T:System.ArgumentException" />
+        </member>
+    </members>
+</doc>

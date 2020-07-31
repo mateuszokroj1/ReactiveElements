@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net46;netcoreapp3.0</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <Authors>Mateusz Okrój</Authors>
+    <Company>Mateusz Okrój</Company>
+    <Product>Reactive Elements</Product>
+    <Description>Library with most used reactive elements, like property, command and sheduled value checker.</Description>
+    <PackageLicenseExpression>Apache-2.0+</PackageLicenseExpression>
+    <Copyright>Copyright by Mateusz Okrój</Copyright>
+    <PackageTags>reactive observable elements property command value notify observer binding</PackageTags>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <SignAssembly>false</SignAssembly>
+    <PackageReleaseNotes>This is prerelease version of this package.</PackageReleaseNotes>
+    <Version>1.0.0-alpha.2</Version>
+    <PackageIcon>icon.png</PackageIcon>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DocumentationFile>D:\Sources\ReactiveElements\ReactiveElements\ReactiveElements\ReactiveElements.xml</DocumentationFile>
+    <OutputPath></OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="System.Reactive" Version="4.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </Resource>
+  </ItemGroup>
+
+</Project>

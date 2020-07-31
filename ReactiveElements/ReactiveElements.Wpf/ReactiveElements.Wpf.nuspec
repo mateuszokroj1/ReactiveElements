@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>ReactiveElements.Wpf</id>
+    <version>1.0.0-alpha.2</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">Apache-2.0+</license>
+    <description>$description$</description>
+    <releaseNotes>This is prerelease version of this library.</releaseNotes>
+    <copyright>Copyright by Mateusz Okrój 2020</copyright>
+	<icon>icon.png</icon>
+    <tags>reactive wpf observable elements property binding command value notify observer</tags>
+	<frameworkAssemblies>
+		  <frameworkAssembly assemblyName="System" targetFramework="net46" />
+		  <frameworkAssembly assemblyName="System.Core" targetFramework="net46" />
+		  <frameworkAssembly assemblyName="System.Windows" targetFramework="net46" />
+		  <frameworkAssembly assemblyName="PresentationCore" targetFramework="net46" />
+		  <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net46" />
+		  <frameworkAssembly assemblyName="WindowsBase" targetFramework="net46" />
+		  <frameworkAssembly assemblyName="System.Xaml" targetFramework="net46" />
+	</frameworkAssemblies>
+  </metadata>
+  <files>
+   <file src="icon.png" target="icon.png" />
+  </files>
+</package>
