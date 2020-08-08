@@ -5,11 +5,17 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
+- task: NuGetCommand@2
+  inputs:
+    command: 'restore'
+    restoreSolution: '**/*.sln'
+    feedsToUse: 'select'
+    vstsFeed: 'd1851293-d098-42b3-8a67-f4ef80f67176'
+
 - task: VSBuild@1
   inputs:
     solution: '**\*.sln'
     clean: true
-    restoreNugetPackages: true
     msbuildArchitecture: 'x64'
 
 - task: VSTest@2
