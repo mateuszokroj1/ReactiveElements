@@ -10,7 +10,7 @@ namespace ReactiveElements.Converters
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
-            return base.CanConvertFrom(context, sourceType);
+            context.PropertyDescriptor.
         }
 
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)

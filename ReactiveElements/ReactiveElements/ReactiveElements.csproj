@@ -6,4 +6,8 @@
     <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.Reactive" Version="4.4.1" />
+  </ItemGroup>
+
 </Project>

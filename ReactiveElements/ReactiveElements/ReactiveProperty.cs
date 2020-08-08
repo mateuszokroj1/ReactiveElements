@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reactive;
 using System.Text;
 
 using ReactiveElements.Converters;
@@ -9,25 +10,43 @@ using ReactiveElements.Observable;
 namespace ReactiveElements
 {
     [TypeConverter(typeof(PropertyTypeConverter))]
-    public class ReactiveProperty<T> : Observable<T>
+    public sealed class ReactiveProperty<T> : IObservable<T>, INotifyPropertyChanged, IDisposable
     {
         #region Fields
 
         internal T value;
-        public PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
+        private readonly List<IObserver<T>> observers = new List<IObserver<T>>();
+        private readonly IDisposable observableSourceUnsubscriber;
 
         #endregion
 
         #region Constructors
 
-        public ReactiveProperty() : this(default)
-        {
-
-        }
+        public ReactiveProperty() : this(default) { }
 
         public ReactiveProperty(T value)
         {
             this.value = value;
+            this.observableSourceUnsubscriber = null;
+        }
+
+        public ReactiveProperty(T startValue, IObservable<T> observableSource)
+        {
+            this.value = startValue;
+
+            if (observableSource == null)
+                throw new ArgumentNullException(nameof(observableSource));
+
+            this.observableSourceUnsubscriber = observableSource.Subscribe(args =>
+            {
+                Value = args;
+            });
+        }
+
+        public ReactiveProperty(Func<T> sourceFunction, TimeSpan periodOfChecking)
+        {
+            sourceFunction.Invoke();
         }
 
         #endregion
@@ -43,10 +62,58 @@ namespace ReactiveElements
                 {
                     this.value = value;
 
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(string.Empty));
 
+                    NotifySubscribers();
                 }
             }
         }
+
+        #endregion
+
+        #region Methods
+
+        private void NotifySubscribers()
+        {
+            foreach(IObserver<T> observer in this.observers)
+            {
+                observer.OnNext(this.value);
+                observer.OnCompleted();
+            }
+        }
+
+        public T GetValue() => Value;
+
+        public void SetValue(T value)
+        {
+            Value = value;
+        }
+
+        /// <exception cref="ArgumentException" />
+        public void SetValue(object value)
+        {
+            if (value.GetType() != typeof(T))
+                throw new ArgumentException($"Bad type. Required type {nameof(T)}.");
+
+            Value = (dynamic)value;
+        }
+
+        public IDisposable Subscribe(IObserver<T> observer)
+        {
+            if (this.observers.Contains(observer))
+                return null;
+
+            this.observers.Add(observer);
+
+            observer.OnNext(this.value);
+            observer.OnCompleted();
+
+            return new Unsubscriber<T>(this.observers, observer);
+        }
+
+        public void Dispose() => this.observableSourceUnsubscriber?.Dispose();
+
+        ~ReactiveProperty() => Dispose();
 
         #endregion
     }
