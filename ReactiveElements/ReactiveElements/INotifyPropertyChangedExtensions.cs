@@ -20,6 +20,8 @@ namespace ReactiveElements
         /// <param name="model">Model that implements <see cref="INotifyPropertyChanged"/></param>
         /// <param name="propertySelector">Expression with selected property from current model</param>
         /// <returns>Generated <see cref="ReactiveProperty{Tproperty}"/></returns>
+        /// <exception cref="ArgumentNullException" />
+        /// <exception cref="ArgumentException" />
         public static ReactiveProperty<TProperty> GetReactiveProperty<TModel, TProperty>(this TModel model, Expression<Func<TModel, TProperty>> propertySelectionExpression)
             where TModel : INotifyPropertyChanged
         {
@@ -56,11 +58,11 @@ namespace ReactiveElements
                 throw new ArgumentException("Not found selected property in current model.", exc);
             }
 
-            // Generating IObservable from 
+            // Generating IObservable from INotifyPropertyChanged model property
 
             var observable = ObservableGenerator.GenerateObservableFromPropertyChangedEventModel<TModel, TProperty>(model, propertyInfo);
 
-            return new ReactiveProperty<TProperty>((TProperty)propertyInfo.GetValue(model), observable.);
+            return new ReactiveProperty<TProperty>((TProperty)propertyInfo.GetValue(model), observable);
         }
     }
 }

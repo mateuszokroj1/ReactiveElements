@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq.Expressions;
 using System.Reactive;
 using System.Text;
 
@@ -18,6 +19,7 @@ namespace ReactiveElements
         public event PropertyChangedEventHandler PropertyChanged;
         private readonly List<IObserver<T>> observers = new List<IObserver<T>>();
         private readonly IDisposable observableSourceUnsubscriber;
+        private readonly TimedValueComparer<T> timedValueComparer;
 
         #endregion
 
@@ -38,15 +40,18 @@ namespace ReactiveElements
             if (observableSource == null)
                 throw new ArgumentNullException(nameof(observableSource));
 
-            this.observableSourceUnsubscriber = observableSource.Subscribe(args =>
-            {
-                Value = args;
-            });
+            this.observableSourceUnsubscriber = observableSource.Subscribe(args => Value = args);
         }
 
         public ReactiveProperty(Func<T> sourceFunction, TimeSpan periodOfChecking)
         {
-            sourceFunction.Invoke();
+            if(sourceFunction == null)
+                if (periodOfChecking > TimeSpan.Zero)
+                    
+             this.value = sourceFunction();
+
+            this.timedValueComparer = new TimedValueComparer<T>(sourceFunction, periodOfChecking);
+            this.observableSourceUnsubscriber = this.timedValueComparer.Subscribe(value => Value = value);
         }
 
         #endregion
@@ -111,9 +116,22 @@ namespace ReactiveElements
             return new Unsubscriber<T>(this.observers, observer);
         }
 
-        public void Dispose() => this.observableSourceUnsubscriber?.Dispose();
+        public void Dispose()
+        {
+            this.observableSourceUnsubscriber?.Dispose();
+            this.timedValueComparer?.Dispose();
+        }
 
         ~ReactiveProperty() => Dispose();
+
+        public static ReactiveProperty<T> FromBindableModel<TModel>(TModel model, Expression<Func<TModel, T>> propertySelectionExpression)
+            where TModel : INotifyPropertyChanged
+        {
+            if (model == null)
+                throw new ArgumentNullException(nameof(model));
+
+            return model.GetReactiveProperty(propertySelectionExpression);
+        }
 
         #endregion
     }

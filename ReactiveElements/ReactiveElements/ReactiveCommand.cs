@@ -29,7 +29,7 @@ namespace ReactiveElements
         public ReactiveCommand(Action<object> execute, Func<bool> canExecute, int interval)
         {
             this.toExecute = execute;
-            this.unsubscriber = System.Reactive.Linq.Observable.;
+            this.unsubscriber = 
         }
 
         #endregion

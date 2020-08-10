@@ -2,8 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <NeutralLanguage>en-US</NeutralLanguage>
+    <Authors>Mateusz Okrój</Authors>
+    <Company>Mateusz Okrój</Company>
+    <Product>Reactive Elements</Product>
+    <Description>Library with most used reactive elements, like property, command</Description>
+    <PackageLicenseExpression>Apache 2.0</PackageLicenseExpression>
+    <Copyright>Copyright by Mateusz Okrój</Copyright>
+    <PackageTags>reactive, observable, elements, property, command, value, notify, observer</PackageTags>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>
