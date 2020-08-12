@@ -1,28 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
+
+using ReactiveElements.Interfaces;
 
 namespace ReactiveElements.Observable
 {
-    internal class TimedValueComparer<T> : IObservable<T>, IDisposable
+    public class TimedValueComparer<T> : ITimedValueComparer<T>
     {
+        #region Fields
+
         private TimeSpan periodOfChecking;
         private T currentValue;
-        private Func<T> funcToCheck;
-        private List<IObserver<T>> observers = new List<IObserver<T>>();
+        private readonly Func<T> funcToCheck;
+        private readonly List<IObserver<T>> observers = new List<IObserver<T>>();
+        private bool disposedValue;
         private readonly Timer timer;
 
+        #endregion
+
+        #region Constructors
+
         /// <summary>
-        /// 
+        /// Creates new instance of <see cref="TimedValueComparer{T}"/>, that checks the value of function in setted period.
         /// </summary>
-        /// <param name="funcToCheck"></param>
-        /// <param name="periodOfChecking"></param>
         /// <exception cref="ArgumentNullException" />
         /// <exception cref="ArgumentOutOfRangeException" />
         /// <exception cref="ExternalException" />
-        public TimedValueComparer(Func<T> funcToCheck, TimeSpan periodOfChecking)
+        public TimedValueComparer(Func<T> funcToCheck, TimeSpan periodOfChecking, SynchronizationContext synchronizationContext)
         {
             this.funcToCheck = funcToCheck ?? throw new ArgumentNullException(nameof(funcToCheck));
 
@@ -35,38 +41,46 @@ namespace ReactiveElements.Observable
             {
                 this.currentValue = funcToCheck();
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 throw new ExternalException("FuncToCheck throws unhandled exception.", exc);
             }
 
             NotifySubscribers();
+            SynchronizationContext = synchronizationContext ?? throw new ArgumentNullException(nameof(synchronizationContext));
 
             this.timer = new Timer(
-                state => SynchronizationContext.Current.Post(args => UpdateValue(), null),
+                state => SynchronizationContext.Post(args => UpdateValue(), null),
                 null,
                 TimeSpan.Zero,
                 this.periodOfChecking
             );
         }
 
-        public void Dispose()
-        {
-            this.timer?.Dispose();
+        /// <summary>
+        /// Creates new instance of <see cref="TimedValueComparer{T}"/>, that checks the value of function in setted period.
+        /// </summary>
+        /// <exception cref="ArgumentNullException" />
+        /// <exception cref="ArgumentOutOfRangeException" />
+        /// <exception cref="ExternalException" />
+        public TimedValueComparer(Func<T> funcToCheck, TimeSpan periodOfChecking)
+            : this(funcToCheck, periodOfChecking, SynchronizationContext.Current) { }
 
-        }
+        #endregion
 
         /// <summary>
         /// Notifies registered observers about new value
         /// </summary>
         private void NotifySubscribers()
         {
-            foreach(var observer in this.observers)
+            foreach (var observer in this.observers)
             {
                 observer.OnNext(this.currentValue);
                 observer.OnCompleted();
             }
         }
+
+        public SynchronizationContext SynchronizationContext { get; set; }
 
         /// <summary>
         /// Updates value with FuncToCheck
@@ -97,6 +111,27 @@ namespace ReactiveElements.Observable
             observer.OnCompleted();
 
             return new Unsubscriber<T>(this.observers, observer);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposedValue)
+            {
+                if (disposing)
+                {
+                    this.timer?.Dispose();
+                }
+
+                this.observers.Clear();
+
+                this.disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

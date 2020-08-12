@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq.Expressions;
-using System.Reactive.Linq;
 using System.Reflection;
-using System.Text;
 
 using ReactiveElements.Generators;
 
 namespace ReactiveElements
 {
-    public static class INotifyPropertyChangedExtensions
+    public static class ExtensionMethods
     {
         /// <summary>
         /// Get <see cref="ReactiveProperty{Tproperty}"/> generated from property in <paramref name="model"/> that implements <see cref="INotifyPropertyChanged"/>
@@ -33,7 +30,7 @@ namespace ReactiveElements
 
             // Getting property name from expression
 
-            string propertyName = null;
+            string propertyName;
 
             if (propertySelectionExpression is MemberExpression && ((UnaryExpression)propertySelectionExpression.Body).Operand is MemberExpression expression)
             {
@@ -47,7 +44,7 @@ namespace ReactiveElements
 
             // Reading property info
 
-            PropertyInfo propertyInfo = null;
+            PropertyInfo propertyInfo;
 
             try
             {
@@ -62,7 +59,13 @@ namespace ReactiveElements
 
             var observable = ObservableGenerator.GenerateObservableFromPropertyChangedEventModel<TModel, TProperty>(model, propertyInfo);
 
-            return new ReactiveProperty<TProperty>((TProperty)propertyInfo.GetValue(model), observable);
+            return new ReactiveProperty<TProperty>(observable);
         }
+
+        public static ReadonlyReactiveProperty<T> ToReadonlyReactiveProperty<T>(this IObservable<T> observable)
+        => new ReadonlyReactiveProperty<T>(observable);
+
+        public static ReactiveProperty<T> ToReactiveProperty<T>(this IObservable<T> observable)
+        => new ReactiveProperty<T>(observable);
     }
 }

@@ -1,128 +1,46 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq.Expressions;
-using System.Reactive;
-using System.Text;
 
-using ReactiveElements.Converters;
-using ReactiveElements.Observable;
+using ReactiveElements.Interfaces;
 
 namespace ReactiveElements
 {
-    [TypeConverter(typeof(PropertyTypeConverter))]
-    public sealed class ReactiveProperty<T> : IObservable<T>, INotifyPropertyChanged, IDisposable
+    //[TypeConverter(typeof(PropertyTypeConverter))]
+    public sealed class ReactiveProperty<T> : ReadonlyReactiveProperty<T>, IReactiveProperty<T>
     {
-        #region Fields
-
-        internal T value;
-        public event PropertyChangedEventHandler PropertyChanged;
-        private readonly List<IObserver<T>> observers = new List<IObserver<T>>();
-        private readonly IDisposable observableSourceUnsubscriber;
-        private readonly TimedValueComparer<T> timedValueComparer;
-
-        #endregion
-
         #region Constructors
 
-        public ReactiveProperty() : this(default) { }
+        public ReactiveProperty() : this(default(T)) { }
 
-        public ReactiveProperty(T value)
-        {
-            this.value = value;
-            this.observableSourceUnsubscriber = null;
-        }
+        public ReactiveProperty(T value) : base(value) { }
 
-        public ReactiveProperty(T startValue, IObservable<T> observableSource)
-        {
-            this.value = startValue;
-
-            if (observableSource == null)
-                throw new ArgumentNullException(nameof(observableSource));
-
-            this.observableSourceUnsubscriber = observableSource.Subscribe(args => Value = args);
-        }
-
-        public ReactiveProperty(Func<T> sourceFunction, TimeSpan periodOfChecking)
-        {
-            if(sourceFunction == null)
-                if (periodOfChecking > TimeSpan.Zero)
-                    
-             this.value = sourceFunction();
-
-            this.timedValueComparer = new TimedValueComparer<T>(sourceFunction, periodOfChecking);
-            this.observableSourceUnsubscriber = this.timedValueComparer.Subscribe(value => Value = value);
-        }
+        public ReactiveProperty(IObservable<T> observableSource) : base(observableSource) { }
 
         #endregion
 
         #region Properties
 
-        public T Value
+        public new T Value
         {
-            get => this.value;
-            set
-            {
-                if(!Equals(this.value, value))
-                {
-                    this.value = value;
-
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(string.Empty));
-
-                    NotifySubscribers();
-                }
-            }
+            get => GetValue();
+            set => SetValue(value);
         }
 
         #endregion
 
         #region Methods
 
-        private void NotifySubscribers()
+        public new void SetValue(T value)
         {
-            foreach(IObserver<T> observer in this.observers)
-            {
-                observer.OnNext(this.value);
-                observer.OnCompleted();
-            }
-        }
-
-        public T GetValue() => Value;
-
-        public void SetValue(T value)
-        {
-            Value = value;
+            base.SetValue(value);
         }
 
         /// <exception cref="ArgumentException" />
-        public void SetValue(object value)
+        public new void SetValue(object value)
         {
-            if (value.GetType() != typeof(T))
-                throw new ArgumentException($"Bad type. Required type {nameof(T)}.");
-
-            Value = (dynamic)value;
+            base.SetValue(value);
         }
-
-        public IDisposable Subscribe(IObserver<T> observer)
-        {
-            if (this.observers.Contains(observer))
-                return null;
-
-            this.observers.Add(observer);
-
-            observer.OnNext(this.value);
-            observer.OnCompleted();
-
-            return new Unsubscriber<T>(this.observers, observer);
-        }
-
-        public void Dispose()
-        {
-            this.observableSourceUnsubscriber?.Dispose();
-            this.timedValueComparer?.Dispose();
-        }
-
-        ~ReactiveProperty() => Dispose();
 
         public static ReactiveProperty<T> FromBindableModel<TModel>(TModel model, Expression<Func<TModel, T>> propertySelectionExpression)
             where TModel : INotifyPropertyChanged

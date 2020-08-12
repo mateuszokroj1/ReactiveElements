@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reactive.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Input;
 
 namespace ReactiveElements
 {
-    public class ReactiveCommand : ICommand, IObserver<bool>, IDisposable
+    public sealed class ReactiveCommand : ICommand, IDisposable
     {
         #region Fields
 
         public event EventHandler CanExecuteChanged;
-        private Action<object> toExecute;
+        private readonly Action<object> toExecute;
         private bool canExecute;
-        private IDisposable unsubscriber;
+        private readonly IDisposable unsubscriber;
 
         #endregion
 
@@ -23,13 +20,7 @@ namespace ReactiveElements
         public ReactiveCommand(Action<object> execute, IObservable<bool> canExecute)
         {
             this.toExecute = execute;
-            this.unsubscriber = canExecute.Subscribe(this);
-        }
-
-        public ReactiveCommand(Action<object> execute, Func<bool> canExecute, int interval)
-        {
-            this.toExecute = execute;
-            this.unsubscriber = 
+            this.unsubscriber = canExecute.Subscribe(value => OnNext(value));
         }
 
         #endregion
@@ -40,11 +31,7 @@ namespace ReactiveElements
 
         public void Execute(object parameter) => this.toExecute(parameter);
 
-        public void OnCompleted() { }
-
-        public void OnError(Exception error) { }
-
-        public void OnNext(bool value)
+        private void OnNext(bool value)
         {
             this.canExecute = value;
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
