@@ -23,6 +23,9 @@ namespace ReactiveElements
             this.unsubscriber = canExecute.Subscribe(value => OnNext(value));
         }
 
+        public ReactiveCommand(Action execute, IObservable<bool> canExecute)
+            : this(param => execute(), canExecute) { }
+
         #endregion
 
         #region Methods
@@ -33,8 +36,11 @@ namespace ReactiveElements
 
         private void OnNext(bool value)
         {
-            this.canExecute = value;
-            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+            if (this.canExecute != value)
+            {
+                this.canExecute = value;
+                CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         public void Dispose()

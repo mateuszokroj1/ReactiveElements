@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-using ReactiveElements.Interfaces;
-
 namespace ReactiveElements.Observable
 {
     public class TimedValueComparer<T> : ITimedValueComparer<T>
     {
         #region Fields
 
-        private TimeSpan periodOfChecking;
+        private readonly TimeSpan periodOfChecking;
         private T currentValue;
         private readonly Func<T> funcToCheck;
         private readonly List<IObserver<T>> observers = new List<IObserver<T>>();

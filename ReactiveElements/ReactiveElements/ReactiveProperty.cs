@@ -2,11 +2,9 @@
 using System.ComponentModel;
 using System.Linq.Expressions;
 
-using ReactiveElements.Interfaces;
-
 namespace ReactiveElements
 {
-    //[TypeConverter(typeof(PropertyTypeConverter))]
+    [TypeConverter(typeof(PropertyTypeConverter))]
     public sealed class ReactiveProperty<T> : ReadonlyReactiveProperty<T>, IReactiveProperty<T>
     {
         #region Constructors

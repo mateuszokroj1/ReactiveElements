@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace ReactiveElements.Interfaces
+namespace ReactiveElements
 {
     public interface IReadonlyReactiveProperty<T> : IObservable<T>, INotifyPropertyChanged, IDisposable
     {

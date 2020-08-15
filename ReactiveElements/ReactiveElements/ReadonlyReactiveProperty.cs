@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 
-using ReactiveElements.Interfaces;
+using ReactiveElements.Converters;
 using ReactiveElements.Observable;
 
 namespace ReactiveElements
 {
+    [TypeConverter(typeof(PropertyTypeConverter))]
     public class ReadonlyReactiveProperty<T> : IReadonlyReactiveProperty<T>
     {
         #region Fields

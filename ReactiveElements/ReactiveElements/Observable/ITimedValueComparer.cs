@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace ReactiveElements.Interfaces
+namespace ReactiveElements.Observable
 {
     public interface ITimedValueComparer<T> : IObservable<T>, IDisposable
     {
