@@ -19,6 +19,7 @@ namespace ReactiveElements
         /// <returns>Generated <see cref="ReactiveProperty{Tproperty}"/></returns>
         /// <exception cref="ArgumentNullException" />
         /// <exception cref="ArgumentException" />
+        /// <exception cref="MemberAccessException" />
         public static ReactiveProperty<TProperty> GetReactiveProperty<TModel, TProperty>(this TModel model, Expression<Func<TModel, TProperty>> propertySelectionExpression)
             where TModel : INotifyPropertyChanged
         {
@@ -50,16 +51,12 @@ namespace ReactiveElements
             {
                 propertyInfo = model.GetType().GetProperty(propertyName);
             }
-            catch(AmbiguousMatchException exc)
+            catch(MemberAccessException exc)
             {
                 throw new ArgumentException("Not found selected property in current model.", exc);
             }
 
-            // Generating IObservable from INotifyPropertyChanged model property
-
-            var observable = ObservableGenerator.GenerateObservableFromPropertyChangedEventModel<TModel, TProperty>(model, propertyInfo);
-
-            return new ReactiveProperty<TProperty>(observable);
+            return ReactivePropertyGenerator.GenerateReactivePropertyFromPropertyChangedEventModel<TModel, TProperty>(model, propertyInfo);
         }
 
         public static ReadonlyReactiveProperty<T> ToReadonlyReactiveProperty<T>(this IObservable<T> observable)

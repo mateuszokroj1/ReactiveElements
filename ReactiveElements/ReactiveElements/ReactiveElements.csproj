@@ -1,19 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net46;netcoreapp3.0</TargetFrameworks>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Authors>Mateusz Okrój</Authors>
     <Company>Mateusz Okrój</Company>
     <Product>Reactive Elements</Product>
-    <Description>Library with most used reactive elements, like property, command</Description>
-    <PackageLicenseExpression>Apache 2.0</PackageLicenseExpression>
+    <Description>Library with most used reactive elements, like property, command and sheduled value checker.</Description>
+    <PackageLicenseExpression>Apache-2.0+</PackageLicenseExpression>
     <Copyright>Copyright by Mateusz Okrój</Copyright>
     <PackageTags>reactive, observable, elements, property, command, value, notify, observer</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <SignAssembly>false</SignAssembly>
-    <LangVersion>latest</LangVersion>
+    <PackageReleaseNotes>Release Candidate for testing and create other packages</PackageReleaseNotes>
+    <Version>1.0.0-rc</Version>
   </PropertyGroup>
 
   <ItemGroup>

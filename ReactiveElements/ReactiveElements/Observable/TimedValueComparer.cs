@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-using ReactiveElements.Interfaces;
-
 namespace ReactiveElements.Observable
 {
     public class TimedValueComparer<T> : ITimedValueComparer<T>
     {
         #region Fields
 
-        private TimeSpan periodOfChecking;
+        private readonly TimeSpan periodOfChecking;
         private T currentValue;
         private readonly Func<T> funcToCheck;
         private readonly List<IObserver<T>> observers = new List<IObserver<T>>();
@@ -74,10 +72,7 @@ namespace ReactiveElements.Observable
         private void NotifySubscribers()
         {
             foreach (var observer in this.observers)
-            {
                 observer.OnNext(this.currentValue);
-                observer.OnCompleted();
-            }
         }
 
         public SynchronizationContext SynchronizationContext { get; set; }
@@ -94,7 +89,12 @@ namespace ReactiveElements.Observable
             }
             catch (Exception exc)
             {
-                throw new ExternalException("FuncToCheck throws an unhandled exception.", exc);
+                var exception = new ExternalException("FuncToCheck throws an unhandled exception.", exc); ;
+
+                foreach (var observer in this.observers)
+                    observer.OnError(exception);
+
+                throw exception;
             }
 
             NotifySubscribers();
@@ -102,13 +102,10 @@ namespace ReactiveElements.Observable
 
         public IDisposable Subscribe(IObserver<T> observer)
         {
-            if (this.observers.Contains(observer))
-                return null;
-
-            this.observers.Add(observer);
+            if (!this.observers.Contains(observer))
+                this.observers.Add(observer);
 
             observer.OnNext(this.currentValue);
-            observer.OnCompleted();
 
             return new Unsubscriber<T>(this.observers, observer);
         }
@@ -120,9 +117,12 @@ namespace ReactiveElements.Observable
                 if (disposing)
                 {
                     this.timer?.Dispose();
-                }
 
-                this.observers.Clear();
+                    foreach (var observer in this.observers)
+                        observer.OnCompleted();
+
+                    this.observers.Clear();
+                }
 
                 this.disposedValue = true;
             }
@@ -130,7 +130,7 @@ namespace ReactiveElements.Observable
 
         public void Dispose()
         {
-            Dispose(disposing: true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
     }

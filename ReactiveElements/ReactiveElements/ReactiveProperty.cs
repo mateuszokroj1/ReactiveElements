@@ -1,12 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq.Expressions;
-
-using ReactiveElements.Interfaces;
+using System.Reflection;
 
 namespace ReactiveElements
 {
-    //[TypeConverter(typeof(PropertyTypeConverter))]
+    [Bindable(true, BindingDirection.TwoWay), DefaultBindingProperty(nameof(Value)), DefaultProperty(nameof(Value)), DefaultMember(nameof(Value))]
     public sealed class ReactiveProperty<T> : ReadonlyReactiveProperty<T>, IReactiveProperty<T>
     {
         #region Constructors
@@ -21,6 +20,7 @@ namespace ReactiveElements
 
         #region Properties
 
+        [Bindable(true, BindingDirection.TwoWay)]
         public new T Value
         {
             get => GetValue();

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ReactiveElements.Interfaces
+namespace ReactiveElements
 {
     public interface IReactiveProperty<T> : IReadonlyReactiveProperty<T>
     {
