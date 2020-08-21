@@ -16,11 +16,10 @@
         <Grid>
             <Label Content="{Binding Display.Value}" />
         </Grid>
-        <Grid DataContext="{Binding Value}">
-            <Slider Value="{Binding Value}" Minimum="-10" Maximum="10"/>
-        </Grid>
+        <Slider Value="{Binding Value.Value, UpdateSourceTrigger=PropertyChanged}" Minimum="-10" Maximum="10" />
         <Grid>
-            <Button>Close</Button>
+            <Button Command="{Binding Command}">Close</Button>
         </Grid>
+        <CheckBox IsEnabled="False" IsChecked="{Binding IsChecked.Value, Mode=OneWay}" />
     </StackPanel>
 </Window>
