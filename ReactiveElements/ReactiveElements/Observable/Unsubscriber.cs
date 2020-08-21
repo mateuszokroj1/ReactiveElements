@@ -9,6 +9,7 @@ namespace ReactiveElements.Observable
 
         private readonly IList<IObserver<T>> observers;
         private readonly IObserver<T> observer;
+        private bool disposedValue;
 
         #endregion
 
@@ -24,15 +25,24 @@ namespace ReactiveElements.Observable
 
         #region Methods
 
-        public void Dispose()
+        protected virtual void Dispose(bool disposing)
         {
-            if (this.observers.Contains(this.observer))
-                this.observers.Remove(this.observer);
+            if (!this.disposedValue)
+            {
+                if (disposing)
+                {
+                    if (this.observers.Contains(this.observer))
+                        this.observers.Remove(this.observer);
+                }
+
+                this.disposedValue = true;
+            }
         }
 
-        ~Unsubscriber()
+        public void Dispose()
         {
-            Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion

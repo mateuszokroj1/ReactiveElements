@@ -10,9 +10,17 @@
         <local:MainWindowViewModel/>
     </Window.DataContext>
     <StackPanel>
-        <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
-        <Label Content="{Binding Display, Mode=OneWay}" />
-        <Slider Value="{Binding Value}" Minimum="-10" Maximum="10"/>
-        <Button Command="{Binding Command}">Close</Button>
+        <Grid>
+            <TextBox Text="{Binding Name.Value, UpdateSourceTrigger=PropertyChanged}" />
+        </Grid>
+        <Grid>
+            <Label Content="{Binding Display.Value}" />
+        </Grid>
+        <Grid DataContext="{Binding Value}">
+            <Slider Value="{Binding Value}" Minimum="-10" Maximum="10"/>
+        </Grid>
+        <Grid>
+            <Button>Close</Button>
+        </Grid>
     </StackPanel>
 </Window>

@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace ReactiveElements
 {
-    public interface IReadonlyReactiveProperty<T> : IObservable<T>, INotifyPropertyChanged, IDisposable
+    public interface IReadonlyReactiveProperty<T> : IObservable<T>, IObserver<T>, INotifyPropertyChanged, IDisposable
     {
         T Value { get; }
 

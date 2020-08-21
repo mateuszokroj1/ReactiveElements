@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Reactive.Linq;
 using System.Windows.Input;
 
 namespace ReactiveElements
 {
-    public sealed class ReactiveCommand : ICommand, IDisposable
+    public sealed class ReactiveCommand : ICommand, IDisposable, IObserver<bool>
     {
         #region Fields
 
         public event EventHandler CanExecuteChanged;
         private readonly Action<object> toExecute;
         private bool canExecute;
+        private bool disposedValue;
         private readonly IDisposable unsubscriber;
 
         #endregion
@@ -20,7 +20,7 @@ namespace ReactiveElements
         public ReactiveCommand(Action<object> execute, IObservable<bool> canExecute)
         {
             this.toExecute = execute;
-            this.unsubscriber = canExecute.Subscribe(value => OnNext(value));
+            this.unsubscriber = canExecute.Subscribe(this);
         }
 
         public ReactiveCommand(Action execute, IObservable<bool> canExecute)
@@ -34,7 +34,7 @@ namespace ReactiveElements
 
         public void Execute(object parameter) => this.toExecute(parameter);
 
-        private void OnNext(bool value)
+        public void OnNext(bool value)
         {
             if (this.canExecute != value)
             {
@@ -43,14 +43,27 @@ namespace ReactiveElements
             }
         }
 
-        public void Dispose()
+        public void OnCompleted() => this.unsubscriber?.Dispose();
+
+        public void OnError(Exception error) => this.unsubscriber?.Dispose();
+
+        private void Dispose(bool disposing)
         {
-            this.unsubscriber?.Dispose();
+            if (!this.disposedValue)
+            {
+                if (disposing)
+                {
+                    this.unsubscriber?.Dispose();
+                }
+
+                this.disposedValue = true;
+            }
         }
 
-        ~ReactiveCommand()
+        public void Dispose()
         {
-            Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion
