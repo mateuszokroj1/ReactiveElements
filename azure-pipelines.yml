@@ -5,40 +5,41 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
-- task: NuGetCommand@2
-  inputs:
-    command: 'restore'
-    restoreSolution: '**/*.sln'
-    feedsToUse: 'select'
-    vstsFeed: 'd1851293-d098-42b3-8a67-f4ef80f67176'
+    - task: NuGetCommand@2
+      inputs:
+        command: 'restore'
+        restoreSolution: '**/*.sln'
+        feedsToUse: 'select'
+        vstsFeed: 'd1851293-d098-42b3-8a67-f4ef80f67176'
 
-- task: VSBuild@1
-  inputs:
-    solution: '**\*.sln'
-    clean: true
-    msbuildArchitecture: 'x64'
+    - task: VSBuild@1
+      inputs:
+        solution: '**\*.sln'
+        clean: true
+        msbuildArchitecture: 'x64'
 
-- task: VSTest@2
-  inputs:
-    testSelector: 'testAssemblies'
-    testAssemblyVer2: |
-      **\*test*.dll
-      !**\*TestAdapter.dll
-      !**\obj\**
-    searchFolder: '$(System.DefaultWorkingDirectory)'
-    runInParallel: true
-    codeCoverageEnabled: true
-    testRunTitle: 'ReactiveElements test'
+    - task: VSTest@2
+      inputs:
+        testSelector: 'testAssemblies'
+        testAssemblyVer2: |
+          **\*test*.dll
+          !**\*TestAdapter.dll
+          !**\obj\**
+        searchFolder: '$(System.DefaultWorkingDirectory)'
+        runInParallel: true
+        codeCoverageEnabled: true
+        testRunTitle: 'ReactiveElements test'
 
-- task: NuGetCommand@2
-  inputs:
-    command: 'pack'
-    packagesToPack: 'ReactiveElements/ReactiveElements/ReactiveElements.csproj;ReactiveElements/ReactiveElements.Wpf/ReactiveElements.Wpf.nuspec'
-    versioningScheme: 'off'
+    - task: NuGetCommand@2
+      inputs:
+        command: 'pack'
+        packagesToPack: 'ReactiveElements/ReactiveElements/ReactiveElements.csproj;ReactiveElements/ReactiveElements.Wpf/ReactiveElements.Wpf.nuspec'
+        versioningScheme: 'off'
+        basePath: $(System.DefaultWorkingDirectory)
 
-- task: NuGetCommand@2
-  inputs:
-    command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
-    nuGetFeedType: 'internal'
-    publishVstsFeed: '03b67d2f-268f-4928-b709-1cb2aebff12d/eaba89eb-a484-4978-99b4-1b8992f7d8dd'
+    - task: NuGetCommand@2
+      inputs:
+        command: 'push'
+        packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+        nuGetFeedType: 'internal'
+        publishVstsFeed: '03b67d2f-268f-4928-b709-1cb2aebff12d/eaba89eb-a484-4978-99b4-1b8992f7d8dd'
