@@ -30,11 +30,11 @@ steps:
         codeCoverageEnabled: true
         testRunTitle: 'ReactiveElements test'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'pack'
-    packagesToPack: 'ReactiveElements/ReactiveElements/ReactiveElements.csproj'
-    versioningScheme: 'off'
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'pack'
+        packagesToPack: 'ReactiveElements/ReactiveElements/ReactiveElements.csproj'
+        versioningScheme: 'off'
 
     - task: NuGetCommand@2
       inputs:
