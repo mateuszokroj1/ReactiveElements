@@ -30,12 +30,17 @@ steps:
         codeCoverageEnabled: true
         testRunTitle: 'ReactiveElements test'
 
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'pack'
+    packagesToPack: 'ReactiveElements/ReactiveElements/ReactiveElements.csproj'
+    versioningScheme: 'off'
+
     - task: NuGetCommand@2
       inputs:
         command: 'pack'
-        packagesToPack: 'ReactiveElements/ReactiveElements/ReactiveElements.csproj;ReactiveElements/ReactiveElements.Wpf/ReactiveElements.Wpf.nuspec'
+        packagesToPack: 'ReactiveElements/ReactiveElements.Wpf/ReactiveElements.Wpf.nuspec'
         versioningScheme: 'off'
-        basePath: $(System.DefaultWorkingDirectory)
 
     - task: NuGetCommand@2
       inputs:
