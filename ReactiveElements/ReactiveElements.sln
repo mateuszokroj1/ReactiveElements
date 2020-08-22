@@ -15,9 +15,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{4B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactiveElements.Wpf", "ReactiveElements.Wpf\ReactiveElements.Wpf.csproj", "{3F37D682-E4CF-4D8C-9EE0-BBC354AECF7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactiveElements.WpfCore", "ReactiveElements.WpfCore\ReactiveElements.WpfCore.csproj", "{BCAAD4CD-B49A-4393-88A7-6391E4D59D72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReactiveElements.WpfCore", "ReactiveElements.WpfCore\ReactiveElements.WpfCore.csproj", "{BCAAD4CD-B49A-4393-88A7-6391E4D59D72}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactiveElements.Uwp", "ReactiveElements.Uwp\ReactiveElements.Uwp.csproj", "{464796B6-AE5E-45A1-9872-AC93402CBE1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactiveElements.Wpf.Tests", "Tests\ReactiveElements.Wpf.Tests\ReactiveElements.Wpf.Tests.csproj", "{5ECE88D9-9B48-457B-B0EB-B5B6E6D2E38D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{46E31FCE-CD0C-4197-9DD1-EC1FADEEDA50}"
+	ProjectSection(SolutionItems) = preProject
+		nuget.config = nuget.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{81C9FD8B-D694-4049-AA83-E99A4CD9777B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure Artifacts Credential Provider", "Azure Artifacts Credential Provider", "{6A86EE9F-AB38-490A-9901-8D171435C2FF}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\Azure Artifacts Credential Provider\install.cmd = Tools\Azure Artifacts Credential Provider\install.cmd
+		Tools\Azure Artifacts Credential Provider\installcredprovider.ps1 = Tools\Azure Artifacts Credential Provider\installcredprovider.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -153,6 +168,26 @@ Global
 		{464796B6-AE5E-45A1-9872-AC93402CBE1F}.Release|x64.Build.0 = Release|x64
 		{464796B6-AE5E-45A1-9872-AC93402CBE1F}.Release|x86.ActiveCfg = Release|x86
 		{464796B6-AE5E-45A1-9872-AC93402CBE1F}.Release|x86.Build.0 = Release|x86
+		{5ECE88D9-9B48-457B-B0EB-B5B6E6D2E38D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5ECE88D9-9B48-457B-B0EB-B5B6E6D2E38D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5ECE88D9-9B48-457B-B0EB-B5B6E6D2E38D}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{5ECE88D9-9B48-457B-B0EB-B5B6E6D2E38D}.Debug|ARM.Build.0 = Debug|Any CPU
+		{5ECE88D9-9B48-457B-B0EB-B5B6E6D2E38D}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{5ECE88D9-9B48-457B-B0EB-B5B6E6D2E38D}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{5ECE88D9-9B48-457B-B0EB-B5B6E6D2E38D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5ECE88D9-9B48-457B-B0EB-B5B6E6D2E38D}.Debug|x64.Build.0 = Debug|Any CPU
+		{5ECE88D9-9B48-457B-B0EB-B5B6E6D2E38D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5ECE88D9-9B48-457B-B0EB-B5B6E6D2E38D}.Debug|x86.Build.0 = Debug|Any CPU
+		{5ECE88D9-9B48-457B-B0EB-B5B6E6D2E38D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5ECE88D9-9B48-457B-B0EB-B5B6E6D2E38D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5ECE88D9-9B48-457B-B0EB-B5B6E6D2E38D}.Release|ARM.ActiveCfg = Release|Any CPU
+		{5ECE88D9-9B48-457B-B0EB-B5B6E6D2E38D}.Release|ARM.Build.0 = Release|Any CPU
+		{5ECE88D9-9B48-457B-B0EB-B5B6E6D2E38D}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{5ECE88D9-9B48-457B-B0EB-B5B6E6D2E38D}.Release|ARM64.Build.0 = Release|Any CPU
+		{5ECE88D9-9B48-457B-B0EB-B5B6E6D2E38D}.Release|x64.ActiveCfg = Release|Any CPU
+		{5ECE88D9-9B48-457B-B0EB-B5B6E6D2E38D}.Release|x64.Build.0 = Release|Any CPU
+		{5ECE88D9-9B48-457B-B0EB-B5B6E6D2E38D}.Release|x86.ActiveCfg = Release|Any CPU
+		{5ECE88D9-9B48-457B-B0EB-B5B6E6D2E38D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -160,6 +195,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{7B9479DC-BC74-461B-A876-509092135206} = {76FA8452-A0A9-4540-83CA-1C69A1D71B28}
 		{B113BB0E-48CC-4C26-8C15-6B8B332A9D7B} = {4BCAAE4E-D539-4DF2-BDE5-993DB56439FA}
+		{5ECE88D9-9B48-457B-B0EB-B5B6E6D2E38D} = {76FA8452-A0A9-4540-83CA-1C69A1D71B28}
+		{6A86EE9F-AB38-490A-9901-8D171435C2FF} = {81C9FD8B-D694-4049-AA83-E99A4CD9777B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A47872CF-8DA6-442C-939C-1FEC6C623579}
