@@ -33,7 +33,7 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'pack'
-    packagesToPack: '**/*.csproj'
+    packagesToPack: 'ReactiveElements/ReactiveElements/ReactiveElements.csproj;ReactiveElements/ReactiveElements.Wpf/ReactiveElements.Wpf.nuspec'
     versioningScheme: 'off'
 
 - task: NuGetCommand@2
