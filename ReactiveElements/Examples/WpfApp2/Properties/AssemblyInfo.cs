@@ -7,17 +7,17 @@ using System.Windows;
 // Ogólne informacje o zestawie są kontrolowane poprzez następujący 
 // zestaw atrybutów. Zmień wartości tych atrybutów, aby zmodyfikować informacje
 // powiązane z zestawem.
-[assembly: AssemblyTitle("ReactiveElements.Wpf")]
-[assembly: AssemblyDescription("Helpers class for Binding ReactiveElements in WPF")]
+[assembly: AssemblyTitle("WpfApp2")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Mateusz Okrój")]
-[assembly: AssemblyProduct("ReactiveElements.Wpf")]
-[assembly: AssemblyCopyright("© Copyright by Mateusz Okrój 2020")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("WpfApp2")]
+[assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-//Ustawienie wartości false dla elementu ComVisible sprawia, że typy w tym zestawie nie będą widoczne
-// dla składników COM. Jeśli potrzebny jest dostęp do typu w tym zestawie z 
+// Ustawienie elementu ComVisible na wartość false sprawia, że typy w tym zestawie są niewidoczne
+// dla składników COM. Jeśli potrzebny jest dostęp do typu w tym zestawie z
 // COM, ustaw wartość true dla atrybutu ComVisible tego typu.
 [assembly: ComVisible(false)]
 
@@ -31,13 +31,13 @@ using System.Windows;
 //[assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.Satellite)]
 
 
-[assembly:ThemeInfo(
+[assembly: ThemeInfo(
     ResourceDictionaryLocation.None, //gdzie znajdują się słowniki zasobów specyficznych dla motywów
-                             //(używane, jeśli nie można odnaleźć zasobu na stronie,
-                             // lub słowniki zasobów aplikacji)
+                                     //(używane, jeśli nie można odnaleźć zasobu na stronie,
+                                     // lub słowniki zasobów aplikacji)
     ResourceDictionaryLocation.SourceAssembly //gdzie znajduje się słownik zasobów ogólnych
-                                      //(używane, jeśli nie można odnaleźć zasobu na stronie,
-                                      // aplikacji lub słowników zasobów specyficznych dla motywów)
+                                              //(używane, jeśli nie można odnaleźć zasobu na stronie,
+                                              // aplikacji lub słowników zasobów specyficznych dla motywów)
 )]
 
 
@@ -46,12 +46,10 @@ using System.Windows;
 //      Wersja główna
 //      Wersja pomocnicza
 //      Numer kompilacji
-//      Rewizja
+//      Poprawka
 //
 // Możesz określić wszystkie wartości lub użyć domyślnych numerów kompilacji i poprawki
 // przy użyciu symbolu „*”, tak jak pokazano poniżej:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: NeutralResourcesLanguage("en-US")]
-[assembly: Guid("AEC3CE1E-2640-4C0B-A4BC-F0103B0CDD72")]

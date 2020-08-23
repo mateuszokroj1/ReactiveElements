@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <package>
-    <metadata>
-        <id>ReactiveElements.Wpf</id>
-        <version>1.0.0-rc</version>
-        <authors>Mateusz Okrój</authors>
-        <owners>mateuszokroj1</owners>
-        <license type="expression">Apache-2.0+</license>
-        <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Helpers for binding ReactiveElements to WPF on .NET Framework</description>
-        <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
-        <copyright>Copyright by Mateusz Okrój 2020</copyright>
-        <tags>reactive, wpf, observable, elements, property, command, value, notify, observer</tags>
-    </metadata>
+	<metadata>
+		<id>ReactiveElements.Wpf</id>
+		<version>1.0.0-rc</version>
+		<authors>Mateusz Okrój</authors>
+		<owners>mateuszokroj1</owners>
+		<license type="expression">Apache-2.0+</license>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>Helpers for binding ReactiveElements to WPF on .NET Framework</description>
+		<releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+		<copyright>Copyright by Mateusz Okrój 2020</copyright>
+		<tags>reactive wpf observable elements property command value notify observer</tags>
+	</metadata>
 </package>

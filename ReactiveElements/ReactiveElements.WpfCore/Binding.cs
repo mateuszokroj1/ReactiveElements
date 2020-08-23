@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Windows;
 
-namespace ReactiveElements.Wpf
+namespace ReactiveElements.WpfCore
 {
     public class Binding : System.Windows.Data.Binding
     {
