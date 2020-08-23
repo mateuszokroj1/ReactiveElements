@@ -1,16 +1,17 @@
-﻿using System.Reflection;
+﻿using System.Resources;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // Ogólne informacje o zestawie są kontrolowane poprzez następujący 
 // zestaw atrybutów. Zmień wartości tych atrybutów, aby zmodyfikować informacje
 // skojarzone z zestawem.
-[assembly: AssemblyTitle("ReactiveElements.Uwp")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("ReactiveElements.UWP")]
+[assembly: AssemblyDescription("Helpers for binding ReactiveElements in Universal Windows Platform (.NET Standard 2.0)")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ReactiveElements.Uwp")]
-[assembly: AssemblyCopyright("Copyright ©  2020")]
+[assembly: AssemblyCompany("Mateusz Okrój")]
+[assembly: AssemblyProduct("ReactiveElements.UWP")]
+[assembly: AssemblyCopyright("© Copyright by Mateusz Okrój 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -27,3 +28,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: ComVisible(false)]
+[assembly: NeutralResourcesLanguage("en-US")]

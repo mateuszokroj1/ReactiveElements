@@ -10,16 +10,30 @@
     <Description>Library with most used reactive elements, like property, command and sheduled value checker.</Description>
     <PackageLicenseExpression>Apache-2.0+</PackageLicenseExpression>
     <Copyright>Copyright by Mateusz Okrój</Copyright>
-    <PackageTags>reactive, observable, elements, property, command, value, notify, observer</PackageTags>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageTags>reactive, observable, elements, property, command, value, notify, observer, binding</PackageTags>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <SignAssembly>false</SignAssembly>
     <PackageReleaseNotes>Release Candidate for testing and create other packages</PackageReleaseNotes>
     <Version>1.0.0-rc</Version>
+    <PackageIcon>icon.png</PackageIcon>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DocumentationFile>D:\Sources\ReactiveElements\ReactiveElements\ReactiveElements\ReactiveElements.xml</DocumentationFile>
+    <OutputPath></OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="System.Reactive" Version="4.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </Resource>
   </ItemGroup>
 
 </Project>

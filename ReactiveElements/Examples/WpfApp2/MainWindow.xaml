@@ -4,9 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp2"
+        xmlns:r="clr-namespace:ReactiveElements.Wpf;assembly=ReactiveElements.Wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <Window.DataContext>
+        <local:MainWindowViewModel/>
+    </Window.DataContext>
+    <StackPanel>
+        <TextBox Text="{r:Binding Fir}" />
+        <TextBox Text="{Binding LastName.Value}" />
+        <Label Content="{Binding Display.Value}" />
+    </StackPanel>
 </Window>

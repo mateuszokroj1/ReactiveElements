@@ -7,7 +7,7 @@ using System.Windows;
 // Ogólne informacje o zestawie są kontrolowane poprzez następujący 
 // zestaw atrybutów. Zmień wartości tych atrybutów, aby zmodyfikować informacje
 // powiązane z zestawem.
-[assembly: AssemblyTitle("ReactiveElements.Wpf")]
+[assembly: AssemblyTitle("ReactiveElements.WPF")]
 [assembly: AssemblyDescription("Helpers class for Binding ReactiveElements in WPF")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Mateusz Okrój")]

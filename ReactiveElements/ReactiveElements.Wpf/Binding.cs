@@ -5,9 +5,14 @@ namespace ReactiveElements.Wpf
 {
     public class Binding : System.Windows.Data.Binding
     {
-        public Binding()
+        public Binding() : base()
         {
             UpdateSourceTrigger = System.Windows.Data.UpdateSourceTrigger.PropertyChanged;
+        }
+
+        public Binding(string path) : this()
+        {
+            Path = path != null ? new PropertyPath(path) : null;
         }
 
         public new object Source
