@@ -1,15 +1,30 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <package>
-	<metadata>
-		<id>ReactiveElements.Wpf</id>
-		<version>1.0.0-rc</version>
-		<authors>Mateusz Okrój</authors>
-		<owners>mateuszokroj1</owners>
-		<license type="expression">Apache-2.0+</license>
-		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<description>Helpers for binding ReactiveElements to WPF on .NET Framework</description>
-		<releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
-		<copyright>Copyright by Mateusz Okrój 2020</copyright>
-		<tags>reactive wpf observable elements property command value notify observer</tags>
-	</metadata>
+  <metadata>
+    <id>ReactiveElements.Wpf</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <description>$description$</description>
+    <releaseNotes>This is prerelease version of this library.</releaseNotes>
+    <copyright>Copyright by Mateusz Okrój 2020</copyright>
+    <tags>reactive observable elements property command value notify observer</tags>
+	  <frameworkAssemblies>
+		  <frameworkAssembly assemblyName="System" targetFramework="net46" />
+		  <frameworkAssembly assemblyName="System.Core" targetFramework="net46" />
+		  <frameworkAssembly assemblyName="System.Windows" targetFramework="net46" />
+		  <frameworkAssembly assemblyName="PresentationCore" targetFramework="net46" />
+		  <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net46" />
+		  <frameworkAssembly assemblyName="WindowsBase" targetFramework="net46" />
+		  <frameworkAssembly assemblyName="System.Xaml" targetFramework="net46" />
+	  </frameworkAssemblies>
+	  <dependencies>
+		  <group targetFramework="net46">
+			  <dependency id="ReactiveElements" version="1.0.0-rc" />
+		  </group>
+	  </dependencies>
+  </metadata>
 </package>
