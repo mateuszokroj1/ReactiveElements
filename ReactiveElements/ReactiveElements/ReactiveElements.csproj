@@ -10,11 +10,11 @@
     <Description>Library with most used reactive elements, like property, command and sheduled value checker.</Description>
     <PackageLicenseExpression>Apache-2.0+</PackageLicenseExpression>
     <Copyright>Copyright by Mateusz Okrój</Copyright>
-    <PackageTags>reactive, observable, elements, property, command, value, notify, observer, binding</PackageTags>
+    <PackageTags>reactive observable elements property command value notify observer binding</PackageTags>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <SignAssembly>false</SignAssembly>
-    <PackageReleaseNotes>Release Candidate for testing and create other packages</PackageReleaseNotes>
-    <Version>1.0.0-rc</Version>
+    <PackageReleaseNotes>This is prerelease version of this package.</PackageReleaseNotes>
+    <Version>1.0.0-alpha.1</Version>
     <PackageIcon>icon.png</PackageIcon>
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>

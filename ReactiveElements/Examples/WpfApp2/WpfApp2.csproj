@@ -35,9 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ReactiveElements, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ReactiveElements.1.0.0-rc\lib\net46\ReactiveElements.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Reactive, Version=4.4.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
@@ -112,6 +109,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ReactiveElements.Wpf\ReactiveElements.Wpf.csproj">
+      <Project>{addb2bba-9b15-40b1-8f2e-39074e24b30a}</Project>
+      <Name>ReactiveElements.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ReactiveElements\ReactiveElements.csproj">
+      <Project>{9106a735-3a3f-431b-a054-56ae68c31198}</Project>
+      <Name>ReactiveElements</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
