@@ -38,7 +38,7 @@
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="ReactiveElements, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ReactiveElements.1.0.0-rc\lib\net46\ReactiveElements.dll</HintPath>
+      <HintPath>..\packages\ReactiveElements.1.0.0-alpha.1\lib\net46\ReactiveElements.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

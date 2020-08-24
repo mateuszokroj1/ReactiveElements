@@ -64,16 +64,6 @@
   <ItemGroup>
     <Analyzer Include="..\..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\ReactiveElements.Wpf\ReactiveElements.Wpf.csproj">
-      <Project>{addb2bba-9b15-40b1-8f2e-39074e24b30a}</Project>
-      <Name>ReactiveElements.Wpf</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ReactiveElements\ReactiveElements.csproj">
-      <Project>{9106a735-3a3f-431b-a054-56ae68c31198}</Project>
-      <Name>ReactiveElements</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

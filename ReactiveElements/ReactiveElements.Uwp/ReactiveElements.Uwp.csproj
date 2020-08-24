@@ -130,7 +130,7 @@
       <Version>6.2.10</Version>
     </PackageReference>
     <PackageReference Include="ReactiveElements">
-      <Version>1.0.0-rc</Version>
+      <Version>1.0.0-alpha.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
