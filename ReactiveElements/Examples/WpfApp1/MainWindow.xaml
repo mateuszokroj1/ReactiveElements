@@ -6,20 +6,5 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Window.DataContext>
-        <local:MainWindowViewModel/>
-    </Window.DataContext>
-    <StackPanel>
-        <Grid>
-            <TextBox Text="{Binding Name.Value, UpdateSourceTrigger=PropertyChanged}" />
-        </Grid>
-        <Grid>
-            <Label Content="{Binding Display.Value}" />
-        </Grid>
-        <Slider Value="{Binding Value.Value, UpdateSourceTrigger=PropertyChanged}" Minimum="-10" Maximum="10" />
-        <Grid>
-            <Button Command="{Binding Command}">Close</Button>
-        </Grid>
-        <CheckBox IsEnabled="False" IsChecked="{Binding IsChecked.Value, Mode=OneWay}" />
-    </StackPanel>
+    <Grid></Grid>
 </Window>

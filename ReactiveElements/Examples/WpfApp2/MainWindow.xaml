@@ -7,12 +7,5 @@
         
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Window.DataContext>
-        <local:MainWindowViewModel/>
-    </Window.DataContext>
-    <StackPanel>
-        <TextBox Text="{Binding FirstName.Value}" />
-        <TextBox Text="{Binding LastName.Value}" />
-        <Label Content="{Binding Display.Value}" />
-    </StackPanel>
+    <Grid></Grid>
 </Window>

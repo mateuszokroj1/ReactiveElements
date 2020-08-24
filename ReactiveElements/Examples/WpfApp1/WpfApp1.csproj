@@ -10,9 +10,4 @@
     <PackageReference Include="System.Reactive" Version="4.4.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\ReactiveElements.WpfCore\ReactiveElements.WpfCore.csproj" />
-    <ProjectReference Include="..\..\ReactiveElements\ReactiveElements.csproj" />
-  </ItemGroup>
-
 </Project>
