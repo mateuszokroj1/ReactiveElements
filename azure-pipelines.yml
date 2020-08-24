@@ -30,16 +30,10 @@ steps:
         codeCoverageEnabled: true
         testRunTitle: 'ReactiveElements test'
 
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'pack'
-        packagesToPack: 'ReactiveElements/ReactiveElements/ReactiveElements.csproj'
-        versioningScheme: 'off'
-
     - task: NuGetCommand@2
       inputs:
         command: 'pack'
-        packagesToPack: 'ReactiveElements/ReactiveElements.Wpf/ReactiveElements.Wpf.csproj'
+        packagesToPack: '**/*.csproj'
         versioningScheme: 'off'
 
     - task: NuGetCommand@2
@@ -48,3 +42,4 @@ steps:
         packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
         nuGetFeedType: 'internal'
         publishVstsFeed: '03b67d2f-268f-4928-b709-1cb2aebff12d/5c78c336-08a1-431e-ab84-7bf7b1143317'
+        allowPackageConflicts: true
