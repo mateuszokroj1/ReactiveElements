@@ -8,6 +8,7 @@ using ReactiveElements.Observable;
 
 namespace ReactiveElements
 {
+
     [Bindable(true, BindingDirection.OneWay), DefaultBindingProperty(nameof(Value)), DefaultProperty(nameof(Value))]
     public class ReadonlyReactiveProperty<T> : IReadonlyReactiveProperty<T>
     {
@@ -15,10 +16,14 @@ namespace ReactiveElements
 
         internal T value;
         private bool disposedValue;
-        public event PropertyChangedEventHandler PropertyChanged;
         private readonly List<IObserver<T>> observers = new List<IObserver<T>>();
         private readonly IDisposable observableSourceUnsubscriber;
         private readonly IObservable<T> observableSource;
+
+        /// <summary>
+        /// Event raised when a Value property is changed
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
 
@@ -81,8 +86,13 @@ namespace ReactiveElements
             SetValue((dynamic)value);
         }
 
+        #region IObservable
+
         public IDisposable Subscribe(IObserver<T> observer)
         {
+            if (observer == null)
+                throw new ArgumentNullException(nameof(observer));
+
             if (!this.observers.Contains(observer))
                 this.observers.Add(observer);
 
@@ -90,6 +100,10 @@ namespace ReactiveElements
 
             return new Unsubscriber<T>(this.observers, observer);
         }
+
+        #endregion
+
+        #region IDisposable
 
         protected virtual void Dispose(bool disposing)
         {
@@ -112,8 +126,12 @@ namespace ReactiveElements
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
+            //GC.SuppressFinalize(this);
         }
+
+        #endregion
+
+        #region IConvertable
 
         public TypeCode GetTypeCode() => TypeCode.Object;
 
@@ -203,6 +221,10 @@ namespace ReactiveElements
             return (dynamic)Value;
         }
 
+        #endregion
+
+        #region IObserver
+
         public void OnCompleted()
         {
             foreach (var observer in this.observers)
@@ -216,6 +238,8 @@ namespace ReactiveElements
         }
 
         public void OnNext(T value) => SetValue(value);
+
+        #endregion
 
         public static implicit operator T(ReadonlyReactiveProperty<T> readonlyReactiveProperty)
         => readonlyReactiveProperty.Value;

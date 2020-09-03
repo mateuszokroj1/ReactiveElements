@@ -47,6 +47,11 @@
         <member name="M:ReactiveElements.ReactiveProperty`1.SetValue(System.Object)">
             <exception cref="T:System.ArgumentException" />
         </member>
+        <member name="E:ReactiveElements.ReadonlyReactiveProperty`1.PropertyChanged">
+            <summary>
+            Event raised when a Value property is changed
+            </summary>
+        </member>
         <member name="M:ReactiveElements.ReadonlyReactiveProperty`1.SetValue(System.Object)">
             <exception cref="T:System.ArgumentException" />
         </member>
