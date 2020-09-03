@@ -104,7 +104,8 @@ namespace ReactiveElements.Tests
         public void Subscribe_WhenArgumentIsNull_ShouldThrowArgumentNullException()
         {
             var property = new ReadonlyReactiveProperty<long>(100L);
-            Assert.Throws<ArgumentNullException>(() => property.Subscribe(null));
+            IObserver<long> observer = null;
+            Assert.Throws<NullReferenceException>(() => property.Subscribe(observer));
         }
 
         #endregion
@@ -115,8 +116,11 @@ namespace ReactiveElements.Tests
         public void Dispose_ShouldDisposeObject()
         {
             var property = new ReadonlyReactiveProperty<bool>();
+            bool runned = false;
+            bool val;
+            property.Subscribe(newVal => val = newVal, () => runned = true);
             property.Dispose();
-            Assert.Throws<ObjectDisposedException>(() => property.Value);
+            Assert.True(runned);
         }
 
         #endregion
@@ -134,6 +138,11 @@ namespace ReactiveElements.Tests
 
         #region IConvert
 
+        [Fact]
+        public void ToBoolean_ShouldReturnBoolean()
+        {
+
+        }
 
         #endregion
 
@@ -167,13 +176,19 @@ namespace ReactiveElements.Tests
             property.Subscribe(val => value = val, () => runned = true);
             property.OnCompleted();
 
-            Assert.False(runned);
+            Assert.True(runned);
         }
 
         [Fact]
         public void OnError_ShouldNotifyObserver()
         {
+            var property = new ReadonlyReactiveProperty<int>(1);
+            int val;
+            Exception exception = null;
+            property.Subscribe(newVal => val = newVal, exc => exception = exc, () => val = 2);
+            property.OnError(new ApplicationException("TEST"));
 
+            Assert.IsType<ApplicationException>(exception);
         }
 
         #endregion
