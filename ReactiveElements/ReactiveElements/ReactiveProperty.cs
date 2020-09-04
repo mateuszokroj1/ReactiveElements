@@ -10,11 +10,11 @@ namespace ReactiveElements
     {
         #region Constructors
 
-        /*public ReactiveProperty() : this(default(T)) { }
+        public ReactiveProperty() : this(default(T)) { }
 
         public ReactiveProperty(T value) : base(value) { }
 
-        public ReactiveProperty(IObservable<T> observableSource) : base(observableSource) { }*/
+        public ReactiveProperty(IObservable<T> observableSource) : base(observableSource) { }
 
         #endregion
 

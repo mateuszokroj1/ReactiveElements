@@ -13,7 +13,12 @@ namespace ReactiveElements
 
         internal T value;
         private bool disposedValue;
+
+        /// <summary>
+        /// Notifies about changes in properties
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+
         private readonly List<IObserver<T>> observers = new List<IObserver<T>>();
         private readonly IDisposable observableSourceUnsubscriber;
         private readonly IObservable<T> observableSource;
