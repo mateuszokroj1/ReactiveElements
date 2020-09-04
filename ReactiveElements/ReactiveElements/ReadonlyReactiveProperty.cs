@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Reflection;
-
 
 using ReactiveElements.Observable;
 
@@ -116,92 +114,6 @@ namespace ReactiveElements
         }
 
         public TypeCode GetTypeCode() => TypeCode.Object;
-
-        public bool ToBoolean(IFormatProvider provider)
-        {
-            return (dynamic)Value;
-        }
-
-        public byte ToByte(IFormatProvider provider)
-        {
-            return (dynamic)Value;
-        }
-
-        public char ToChar(IFormatProvider provider)
-        {
-            return (dynamic)Value;
-        }
-
-        public DateTime ToDateTime(IFormatProvider provider)
-        {
-            return (dynamic)Value;
-        }
-
-        public decimal ToDecimal(IFormatProvider provider)
-        {
-            return (dynamic)Value;
-        }
-
-        public double ToDouble(IFormatProvider provider)
-        {
-            return (dynamic)Value;
-        }
-
-        public short ToInt16(IFormatProvider provider)
-        {
-            return (dynamic)Value;
-        }
-
-        public int ToInt32(IFormatProvider provider)
-        {
-            return (dynamic)Value;
-        }
-
-        public long ToInt64(IFormatProvider provider)
-        {
-            return (dynamic)Value;
-        }
-
-        public sbyte ToSByte(IFormatProvider provider)
-        {
-            return (dynamic)Value;
-        }
-
-        public float ToSingle(IFormatProvider provider)
-        {
-            return (dynamic)Value;
-        }
-
-        public string ToString(IFormatProvider provider)
-        {
-            return Value.ToString();
-        }
-
-        /// <exception cref="InvalidOperationException"/>
-        public object ToType(Type conversionType, IFormatProvider provider)
-        {
-            if (Value is IConvertible toConvert)
-                return toConvert.ToType(conversionType, provider);
-            else if (Value.GetType() == conversionType)
-                return Value;
-            else
-                throw new InvalidOperationException("Cannot convert to: " + conversionType.FullName);
-        }
-
-        public ushort ToUInt16(IFormatProvider provider)
-        {
-            return (dynamic)Value;
-        }
-
-        public uint ToUInt32(IFormatProvider provider)
-        {
-            return (dynamic)Value;
-        }
-
-        public ulong ToUInt64(IFormatProvider provider)
-        {
-            return (dynamic)Value;
-        }
 
         public void OnCompleted()
         {
