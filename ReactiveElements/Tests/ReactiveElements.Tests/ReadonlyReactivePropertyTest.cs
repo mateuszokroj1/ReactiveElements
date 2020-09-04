@@ -2,8 +2,6 @@
 using System.Numerics;
 using System.Reactive.Linq;
 
-using ReactiveElements;
-
 using Xunit;
 
 namespace ReactiveElements.Tests
@@ -132,16 +130,6 @@ namespace ReactiveElements.Tests
         {
             ReadonlyReactiveProperty<bool> testProperty = new ReadonlyReactiveProperty<bool>();
             Assert.Equal(TypeCode.Object, testProperty.GetTypeCode());
-        }
-
-        #endregion
-
-        #region IConvert
-
-        [Fact]
-        public void ToBoolean_ShouldReturnBoolean()
-        {
-
         }
 
         #endregion
