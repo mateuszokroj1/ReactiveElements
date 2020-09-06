@@ -28,6 +28,12 @@ namespace ReactiveElements
 
         #endregion
 
+        #region Properties
+
+        public Exception LastError { get; private set; }
+
+        #endregion
+
         #region Methods
 
         public bool CanExecute(object parameter) => this.canExecute;
