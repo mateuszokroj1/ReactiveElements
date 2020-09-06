@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection.Metadata;
 
 using Xunit;
 
@@ -115,7 +114,10 @@ namespace ReactiveElements.Tests
         [Fact]
         public void OnError_ShouldSetLastError()
         {
-
+            bool executed = false;
+            ReactiveCommand command = new ReactiveCommand(() => executed = true, new ReactiveProperty<bool>(true));
+            var exception = new ApplicationException("TEST");
+            command.OnError(exception);
         }
 
         #endregion
