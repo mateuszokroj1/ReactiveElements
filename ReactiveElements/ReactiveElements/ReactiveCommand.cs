@@ -7,7 +7,11 @@ namespace ReactiveElements
     {
         #region Fields
 
+        /// <summary>
+        /// Notifies about CanExecute change.
+        /// </summary>
         public event EventHandler CanExecuteChanged;
+
         private readonly Action<object> toExecute;
         private bool canExecute;
         private bool disposedValue;
