@@ -51,7 +51,11 @@ namespace ReactiveElements
 
         public void OnCompleted() => this.unsubscriber?.Dispose();
 
-        public void OnError(Exception error) => this.unsubscriber?.Dispose();
+        public void OnError(Exception error)
+        {
+            this.unsubscriber?.Dispose();
+            LastError = error;
+        }
 
         private void Dispose(bool disposing)
         {
