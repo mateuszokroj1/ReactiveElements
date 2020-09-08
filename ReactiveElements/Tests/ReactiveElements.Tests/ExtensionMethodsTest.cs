@@ -27,5 +27,25 @@ namespace ReactiveElements.Tests
         }
 
         #endregion
+
+        #region ToReadonlyReactiveProperty
+
+        [Fact]
+        public void ToReadonlyReactiveProperty_ShouldReturnReadonlyReactiveProperty()
+        {
+
+        }
+
+        #endregion
+
+        #region ToReactiveProperty
+
+        [Fact]
+        public void ToReactiveProperty_ShouldReturnReactiveProperty()
+        {
+
+        }
+
+        #endregion
     }
 }
