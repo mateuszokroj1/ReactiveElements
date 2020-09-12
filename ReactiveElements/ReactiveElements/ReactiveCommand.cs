@@ -23,8 +23,8 @@ namespace ReactiveElements
 
         public ReactiveCommand(Action<object> execute, IObservable<bool> canExecute)
         {
-            this.toExecute = execute;
-            this.unsubscriber = canExecute.Subscribe(this);
+            this.toExecute = execute ?? throw new ArgumentNullException(nameof(execute));
+            this.unsubscriber = canExecute?.Subscribe(this) ?? throw new ArgumentNullException(nameof(canExecute));
         }
 
         public ReactiveCommand(Action execute, IObservable<bool> canExecute)
