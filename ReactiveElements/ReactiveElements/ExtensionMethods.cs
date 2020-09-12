@@ -33,7 +33,10 @@ namespace ReactiveElements
 
             string propertyName;
 
-            if (propertySelectionExpression is MemberExpression && ((UnaryExpression)propertySelectionExpression.Body).Operand is MemberExpression expression)
+            if (propertySelectionExpression is LambdaExpression &&
+                propertySelectionExpression.Body is UnaryExpression expr2 &&
+                expr2.Operand is MemberExpression expression
+            )
             {
                 if (expression.Member == null || string.IsNullOrEmpty(expression.Member.Name))
                     throw new ArgumentException("Cannot read name of selected property.");

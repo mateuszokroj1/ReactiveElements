@@ -17,6 +17,22 @@
             <exception cref="T:System.ArgumentException" />
             <exception cref="T:System.MemberAccessException" />
         </member>
+        <member name="T:ReactiveElements.IReadonlyReactiveProperty`1">
+            <summary>
+            Interface for ReadonlyReactiveProperty class
+            </summary>
+            <typeparam name="T">Type of property value</typeparam>
+        </member>
+        <member name="P:ReactiveElements.IReadonlyReactiveProperty`1.Value">
+            <summary>
+            Represents current value of property
+            </summary>
+        </member>
+        <member name="M:ReactiveElements.IReadonlyReactiveProperty`1.GetValue">
+            <summary>
+            Returns current value of property
+            </summary>
+        </member>
         <member name="M:ReactiveElements.Observable.TimedValueComparer`1.#ctor(System.Func{`0},System.TimeSpan,System.Threading.SynchronizationContext)">
             <summary>
             Creates new instance of <see cref="T:ReactiveElements.Observable.TimedValueComparer`1"/>, that checks the value of function in setted period.
@@ -44,19 +60,21 @@
             </summary>
             <exception cref="T:System.Runtime.InteropServices.ExternalException" />
         </member>
+        <member name="E:ReactiveElements.ReactiveCommand.CanExecuteChanged">
+            <summary>
+            Notifies about CanExecute change.
+            </summary>
+        </member>
         <member name="M:ReactiveElements.ReactiveProperty`1.SetValue(System.Object)">
             <exception cref="T:System.ArgumentException" />
         </member>
         <member name="E:ReactiveElements.ReadonlyReactiveProperty`1.PropertyChanged">
             <summary>
-            Event raised when a Value property is changed
+            Notifies about changes in properties
             </summary>
         </member>
         <member name="M:ReactiveElements.ReadonlyReactiveProperty`1.SetValue(System.Object)">
             <exception cref="T:System.ArgumentException" />
-        </member>
-        <member name="M:ReactiveElements.ReadonlyReactiveProperty`1.ToType(System.Type,System.IFormatProvider)">
-            <exception cref="T:System.InvalidOperationException"/>
         </member>
     </members>
 </doc>
