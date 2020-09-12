@@ -33,7 +33,8 @@ namespace ReactiveElements.Tests
         [Fact]
         public void ToReadonlyReactiveProperty_ShouldReturnReadonlyReactiveProperty()
         {
-
+            ReadonlyReactiveProperty<int> property = System.Reactive.Linq.Observable.Range(0, 2).ToReadonlyReactiveProperty();
+            Assert.NotNull(property);
         }
 
         #endregion
@@ -43,7 +44,8 @@ namespace ReactiveElements.Tests
         [Fact]
         public void ToReactiveProperty_ShouldReturnReactiveProperty()
         {
-
+            ReactiveProperty<int> property = System.Reactive.Linq.Observable.Range(0, 2).ToReactiveProperty();
+            Assert.NotNull(property);
         }
 
         #endregion
