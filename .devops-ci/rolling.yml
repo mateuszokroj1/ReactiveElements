@@ -7,9 +7,8 @@ name: ReactiveElements - rolling build
 
 trigger:
  branches:
-  exclude:
-     - main
   include:
+     - main
      - Feature/*
      - Fix/*
      - Release/*
