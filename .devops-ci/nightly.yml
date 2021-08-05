@@ -1,0 +1,242 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+name: ReactiveElements - nightly build
+
+schedules:
+  - cron: "5 0 * * *"
+    displayName: Daily nightly build
+    branches:
+      include:
+        - Features/*
+        - Fix/*
+    batch: true
+    always: false
+
+trigger: none
+
+pr:
+  branches:
+   exclude:
+     - main
+     - Feature/*
+     - Fix/*
+     - Release/*
+
+jobs:
+
+  - job: Linux
+    displayName: Linux Ubuntu - latest
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+
+      - task: UseDotNet@2
+        displayName: Install .NET Core 3.1
+        inputs:
+          packageType: 'sdk'
+          version: '3.1.x'
+
+      - task: UseDotNet@2
+        displayName: Install .NET 5.0
+        inputs:
+          packageType: 'sdk'
+          version: '5.0.x'
+
+      - task: DotNetCoreCLI@2
+        displayName: Restore ReactiveElements.csproj
+        inputs:
+          command: 'restore'
+          projects: 'src/ReactiveElements/ReactiveElements.csproj'
+          feedsToUse: 'config'
+          nugetConfigPath: 'src/nuget.config'
+          configuration: Debug
+
+      - task: DotNetCoreCLI@2
+        displayName: Restore ReactiveElements.Tests.csproj
+        inputs:
+          command: 'restore'
+          projects: 'src/Tests/ReactiveElements.Tests/ReactiveElements.Tests.csproj'
+          feedsToUse: 'config'
+          nugetConfigPath: 'src/nuget.config'
+          configuration: Debug
+
+      - task: DotNetCoreCLI@2
+        displayName: Build ReactiveElements.csproj
+        inputs:
+          command: 'build'
+          projects: 'src/ReactiveElements/ReactiveElements.csproj'
+          configuration: Debug
+      
+      - task: DotNetCoreCLI@2
+        displayName: Build ReactiveElements.Tests.csproj
+        inputs:
+          command: 'build'
+          projects: 'src/Tests/ReactiveElements.Tests/ReactiveElements.Tests.csproj'
+          configuration: Debug
+
+      - task: DotNetCoreCLI@2
+        displayName: Test ReactiveElements.Tests.csproj
+        inputs:
+          command: 'test'
+          projects: 'src/Tests/ReactiveElements.Tests/ReactiveElements.Tests.csproj'
+          configuration: Debug
+
+  - job: Mac
+    displayName: Apple Mac OS - latest
+    pool:
+      vmImage: macOS-latest
+    steps:
+
+      - task: UseDotNet@2
+        displayName: Install .NET Core 3.1
+        inputs:
+          packageType: 'sdk'
+          version: '3.1.x'
+
+      - task: UseDotNet@2
+        displayName: Install .NET 5.0
+        inputs:
+          packageType: 'sdk'
+          version: '5.0.x'
+
+      - task: DotNetCoreCLI@2
+        displayName: Restore ReactiveElements.csproj
+        inputs:
+          command: 'restore'
+          projects: 'src/ReactiveElements/ReactiveElements.csproj'
+          feedsToUse: 'config'
+          nugetConfigPath: 'src/nuget.config'
+          configuration: Debug
+
+      - task: DotNetCoreCLI@2
+        displayName: Restore ReactiveElements.Tests.csproj
+        inputs:
+          command: 'restore'
+          projects: 'src/Tests/ReactiveElements.Tests/ReactiveElements.Tests.csproj'
+          feedsToUse: 'config'
+          nugetConfigPath: 'src/nuget.config'
+          configuration: Debug
+
+      - task: DotNetCoreCLI@2
+        displayName: Build ReactiveElements.csproj
+        inputs:
+          command: 'build'
+          projects: 'src/ReactiveElements/ReactiveElements.csproj'
+          configuration: Debug
+      
+      - task: DotNetCoreCLI@2
+        displayName: Build ReactiveElements.Tests.csproj
+        inputs:
+          command: 'build'
+          projects: 'src/Tests/ReactiveElements.Tests/ReactiveElements.Tests.csproj'
+          configuration: Debug
+
+      - task: DotNetCoreCLI@2
+        displayName: Test ReactiveElements.Tests.csproj
+        inputs:
+          command: 'test'
+          projects: 'src/Tests/ReactiveElements.Tests/ReactiveElements.Tests.csproj'
+          configuration: Debug
+
+  - job: Windows
+    displayName: Windows - latest
+    pool:
+      vmImage: windows-latest
+    steps:
+
+      - task: UseDotNet@2
+        displayName: Install .NET Core 3.1
+        inputs:
+          packageType: 'sdk'
+          version: '3.1.x'
+
+      - task: UseDotNet@2
+        displayName: Install .NET 5.0
+        inputs:
+          packageType: 'sdk'
+          version: '5.0.x'
+
+      - task: NuGetToolInstaller@1
+        displayName: Install Nuget.exe
+        inputs:
+          versionSpec: '5.x'
+
+      - task: NuGetCommand@2
+        displayName: Restore solution
+        inputs:
+          command: 'restore'
+          restoreSolution: 'src/ReactiveElements.sln'
+          feedsToUse: 'config'
+          nugetConfigPath: 'src/nuget.config'
+          configuration: Debug
+
+      - task: VSBuild@1
+        displayName: Build solution
+        inputs:
+          solution: 'src/ReactiveElements.sln'
+          configuration: 'Debug'
+          maximumCpuCount: true
+          msbuildArchitecture: 'x64'
+
+      - task: VSTest@2
+        displayName: Test solution
+        inputs:
+          testSelector: 'testAssemblies'
+          testAssemblyVer2: |
+            **\*test*.dll
+            !**\*TestAdapter.dll
+            !**\obj\**
+          searchFolder: '$(System.DefaultWorkingDirectory)'
+          runInParallel: true
+          codeCoverageEnabled: true
+          rerunFailedTests: true
+          rerunType: 'basedOnTestFailureCount'
+          rerunMaxAttempts: '2'
+          configuration: Debug
+
+      - task: NuGetCommand@2
+        displayName: Pack ReactiveElements
+        inputs:
+          command: 'pack'
+          packagesToPack: 'src/ReactiveElements/ReactiveElements.csproj'
+          configuration: 'Debug'
+          versioningScheme: 'byPrereleaseNumber'
+          majorVersion: '1'
+          minorVersion: '0'
+          patchVersion: '0'
+
+      - task: NuGetCommand@2
+        displayName: Pack ReactiveElements.Wpf
+        inputs:
+          command: 'pack'
+          packagesToPack: 'src/ReactiveElements.Wpf/ReactiveElements.Wpf.nuspec'
+          configuration: 'Debug'
+          versioningScheme: 'byPrereleaseNumber'
+          majorVersion: '1'
+          minorVersion: '0'
+          patchVersion: '0'
+
+      - task: NuGetCommand@2
+        displayName: Pack ReactiveElements.WpfCore
+        inputs:
+          command: 'pack'
+          packagesToPack: 'src/ReactiveElements.WpfCore/ReactiveElements.WpfCore.csproj'
+          configuration: 'Debug'
+          versioningScheme: 'byPrereleaseNumber'
+          majorVersion: '1'
+          minorVersion: '0'
+          patchVersion: '0'
+
+      - task: NuGetCommand@2
+        displayName: Pack ReactiveElements.Uwp
+        inputs:
+          command: 'pack'
+          packagesToPack: 'src/ReactiveElements.Uwp/ReactiveElements.Uwp.nuspec'
+          configuration: 'Debug'
+          versioningScheme: 'byPrereleaseNumber'
+          majorVersion: '1'
+          minorVersion: '0'
+          patchVersion: '0'
