@@ -1,0 +1,133 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+name: ReactiveElements - rolling build
+
+trigger:
+ branches:
+  exclude:
+     - main
+  include:
+     - Feature/*
+     - Fix/*
+     - Release/*
+
+pr:
+  branches:
+   exclude:
+     - main
+     - Feature/*
+     - Fix/*
+     - Release/*
+
+jobs:
+
+  - job: Linux
+    displayName: Linux Ubuntu - latest
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+
+      - task: UseDotNet@2
+        displayName: Install .NET Core 3.1
+        inputs:
+          packageType: 'sdk'
+          version: '3.1.x'
+
+      - task: UseDotNet@2
+        displayName: Install .NET 5.0
+        inputs:
+          packageType: 'sdk'
+          version: '5.0.x'
+
+      - task: DotNetCoreCLI@2
+        displayName: Restore ReactiveElements.csproj
+        inputs:
+          command: 'restore'
+          projects: 'src/ReactiveElements/ReactiveElements.csproj'
+          feedsToUse: 'config'
+          nugetConfigPath: 'src/nuget.config'
+          configuration: Debug
+
+      - task: DotNetCoreCLI@2
+        displayName: Build ReactiveElements.csproj
+        inputs:
+          command: 'build'
+          projects: 'src/ReactiveElements/ReactiveElements.csproj'
+          configuration: Debug
+
+  - job: Mac
+    displayName: Apple Mac OS - latest
+    pool:
+      vmImage: macOS-latest
+    steps:
+
+      - task: UseDotNet@2
+        displayName: Install .NET Core 3.1
+        inputs:
+          packageType: 'sdk'
+          version: '3.1.x'
+
+      - task: UseDotNet@2
+        displayName: Install .NET 5.0
+        inputs:
+          packageType: 'sdk'
+          version: '5.0.x'
+
+      - task: DotNetCoreCLI@2
+        displayName: Restore ReactiveElements.csproj
+        inputs:
+          command: 'restore'
+          projects: 'src/ReactiveElements/ReactiveElements.csproj'
+          feedsToUse: 'config'
+          nugetConfigPath: 'src/nuget.config'
+          configuration: Debug
+
+      - task: DotNetCoreCLI@2
+        displayName: Build ReactiveElements.csproj
+        inputs:
+          command: 'build'
+          projects: 'src/ReactiveElements/ReactiveElements.csproj'
+          configuration: Debug
+
+  - job: Windows
+    displayName: Windows - latest
+    pool:
+      vmImage: windows-latest
+    steps:
+
+      - task: UseDotNet@2
+        displayName: Install .NET Core 3.1
+        inputs:
+          packageType: 'sdk'
+          version: '3.1.x'
+
+      - task: UseDotNet@2
+        displayName: Install .NET 5.0
+        inputs:
+          packageType: 'sdk'
+          version: '5.0.x'
+
+      - task: NuGetToolInstaller@1
+        displayName: Install Nuget.exe
+        inputs:
+          versionSpec: '5.x'
+
+      - task: NuGetCommand@2
+        displayName: Restore solution
+        inputs:
+          command: 'restore'
+          restoreSolution: 'src/ReactiveElements.sln'
+          feedsToUse: 'config'
+          nugetConfigPath: 'src/nuget.config'
+          configuration: Debug
+
+      - task: VSBuild@1
+        displayName: Build solution
+        inputs:
+          solution: 'src/ReactiveElements.sln'
+          configuration: 'Debug'
+          maximumCpuCount: true
+          msbuildArchitecture: 'x64'
