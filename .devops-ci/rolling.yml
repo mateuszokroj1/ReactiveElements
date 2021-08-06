@@ -12,6 +12,9 @@ variables:
   - name: TestsIsEnabled
     value: false
 
+  - name: Configuration
+    value: Debug
+
 trigger:
  branches:
   include:
