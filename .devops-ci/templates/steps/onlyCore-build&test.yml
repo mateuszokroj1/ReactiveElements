@@ -1,0 +1,43 @@
+steps:
+
+  - task: DotNetCoreCLI@2
+    displayName: Restore ReactiveElements.csproj
+    inputs:
+      command: 'restore'
+      projects: '$(SourceDirectory)/ReactiveElements/ReactiveElements.csproj'
+      feedsToUse: 'config'
+      nugetConfigPath: 'src/nuget.config'
+      configuration: $(Configuration)
+
+  - task: DotNetCoreCLI@2
+    displayName: Restore ReactiveElements.Tests.csproj
+    condition: eq(variables['TestsIsEnabled'], true)
+    inputs:
+      command: 'restore'
+      projects: '$(TestsDirectory)/ReactiveElements.Tests/ReactiveElements.Tests.csproj'
+      feedsToUse: 'config'
+      nugetConfigPath: 'src/nuget.config'
+      configuration: $(Configuration)
+
+  - task: DotNetCoreCLI@2
+    displayName: Build ReactiveElements.csproj
+    inputs:
+      command: 'build'
+      projects: '$(SourceDirectory)/ReactiveElements/ReactiveElements.csproj'
+      configuration: $(Configuration)
+  
+  - task: DotNetCoreCLI@2
+    displayName: Build ReactiveElements.Tests.csproj
+    condition: eq(variables['TestsIsEnabled'], true)
+    inputs:
+      command: 'build'
+      projects: '$(TestsDirectory)/ReactiveElements.Tests/ReactiveElements.Tests.csproj'
+      configuration: $(Configuration)
+
+  - task: DotNetCoreCLI@2
+    displayName: Test ReactiveElements.Tests.csproj
+    condition: eq(variables['TestsIsEnabled'], true)
+    inputs:
+      command: 'test'
+      projects: '$(TestsDirectory)/ReactiveElements.Tests/ReactiveElements.Tests.csproj'
+      configuration: $(Configuration)

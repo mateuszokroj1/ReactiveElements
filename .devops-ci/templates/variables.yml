@@ -1,0 +1,49 @@
+variables:
+
+  - name: SourceDirectory
+    value: '$(Build.SourcesDirectory)/src'
+    readonly: true
+
+  - name: TestsDirectory
+    value: '$(SourceDirectory)/Tests'
+    readonly: true
+
+  - name: ExamplesDirectory
+    value: 'Examples'
+    readonly: true
+
+  - name: Core.MajorVersion
+    value: 1
+
+  - name: Core.MinorVersion
+    value: 0
+
+  - name: Core.PatchVersion
+    value: 0
+
+  - name: Wpf.MajorVersion
+    value: 1
+
+  - name: Wpf.MinorVersion
+    value: 0
+
+  - name: Wpf.PatchVersion
+    value: 0
+
+  - name: Uwp.MajorVersion
+    value: 1
+
+  - name: Uwp.MinorVersion
+    value: 0
+
+  - name: Uwp.PatchVersion
+    value: 0
+
+  - name: WpfCore.MajorVersion
+    value: 1
+
+  - name: WpfCore.MinorVersion
+    value: 0
+
+  - name: WpfCore.PatchVersion
+    value: 0

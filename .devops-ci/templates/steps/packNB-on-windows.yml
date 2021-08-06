@@ -1,0 +1,45 @@
+steps:
+
+- task: NuGetCommand@2
+  displayName: Pack ReactiveElements
+  inputs:
+    command: 'pack'
+    packagesToPack: '**/*.csproj/ReactiveElements.csproj'
+    configuration: $(Configuration)
+    versioningScheme: 'byPrereleaseNumber'
+    majorVersion: $(Core.MajorVersion)
+    minorVersion: $(Core.MinorVersion)
+    patchVersion: $(Core.PatchVersion)
+
+- task: NuGetCommand@2
+  displayName: Pack ReactiveElements.Wpf
+  inputs:
+    command: 'pack'
+    packagesToPack: '$(SourceDirectory)/ReactiveElements.Wpf/ReactiveElements.Wpf.nuspec'
+    configuration: $(Configuration)
+    versioningScheme: 'byPrereleaseNumber'
+    majorVersion: $(Wpf.MajorVersion)
+    minorVersion: $(Wpf.MinorVersion)
+    patchVersion: $(Wpf.PatchVersion)
+
+- task: DotNetCoreCLI@2
+  displayName: Pack ReactiveElements.WpfCore
+  inputs:
+    command: 'pack'
+    packagesToPack: '**/ReactiveElements.WpfCore.csproj'
+    configuration: $(Configuration)
+    versioningScheme: 'byPrereleaseNumber'
+    majorVersion: $(WpfCore.MajorVersion)
+    minorVersion: $(WpfCore.MinorVersion)
+    patchVersion: $(WpfCore.PatchVersion)
+
+- task: NuGetCommand@2
+  displayName: Pack ReactiveElements.Uwp
+  inputs:
+    command: 'pack'
+    packagesToPack: '$(SourceDirectory)/ReactiveElements.Uwp/ReactiveElements.Uwp.nuspec'
+    configuration: $(Configuration)
+    versioningScheme: 'byPrereleaseNumber'
+    majorVersion: $(Uwp.MajorVersion)
+    minorVersion: $(Uwp.MinorVersion)
+    patchVersion: $(Uwp.PatchVersion)
