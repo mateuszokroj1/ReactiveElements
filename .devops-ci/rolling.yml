@@ -11,9 +11,11 @@ variables:
 
   - name: TestsIsEnabled
     value: false
+    readonly: true
 
   - name: Configuration
     value: Debug
+    readonly: true
 
 trigger:
  branches:

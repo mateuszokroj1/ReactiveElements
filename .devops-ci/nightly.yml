@@ -11,9 +11,11 @@ variables:
 
   - name: Configuration
     value: Debug
+    readonly: true
 
   - name: TestsIsEnabled
     value: true
+    readonly: true
 
 schedules:
 
