@@ -1,0 +1,65 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+name: ReactiveElements - NB main
+
+variables:
+
+  - template: templates/variables.yml
+
+  - name: Configuration
+    value: NightlyBuild
+    readonly: true
+
+  - name: TestsIsEnabled
+    value: true
+    readonly: true
+
+  - name: IsPR
+    value: eq('$(Build.Reason)', 'PullRequest')
+
+trigger: none
+
+pr:
+  autoCancel: true
+  drafts: false
+  branches:
+    include:
+      - main
+      - Release/*
+    exclude:
+      - Feature/*
+      - Fix/*
+
+schedules:
+  - cron: "5 0 * * *"
+    displayName: Daily nightly build on main
+    branches:
+      include:
+        - main
+    batch: true
+    always: false
+
+jobs:
+
+  - job: Linux
+    displayName: Linux Ubuntu - latest
+    workspace:
+      clean: all
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+
+      - template: templates/steps/sdk-installation.yml
+
+      - template: templates/steps/onlyCore-build&test.yml
+
+      - task: PublishTestResults@2
+        displayName: Fail, if are failed tests
+        inputs:
+          testResultsFormat: 'XUnit'
+          testResultsFiles: '**/*.trx'
+          failTaskOnFailedTests: true
+          publishRunAttachments: false
