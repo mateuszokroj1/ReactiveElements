@@ -3,7 +3,7 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-name: ReactiveElements - quality gate
+name: 'ReactiveElements - quality gate:'
 
 variables:
 
@@ -96,7 +96,7 @@ jobs:
     workspace:
       clean: all
     pool:
-      vmImage: 'macOS-latest'
+      vmImage: 'windows-latest'
     steps:
 
       - template: templates/steps/sdk-installation.yml
@@ -124,6 +124,7 @@ jobs:
           msbuildArchitecture: x64
 
       - task: VSTest@2
+        displayName: Test source solution
         inputs:
           configuration: $(Configuration)
           testSelector: 'testAssemblies'
