@@ -3,22 +3,27 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-name: ReactiveElements - NB main
+name: ReactiveElements - quality gate
 
 variables:
 
   - template: templates/variables.yml
 
-  - name: Configuration
-    value: NightlyBuild
-    readonly: true
+  - name: IsSchedulesOnMain
+    value: and( eq($(Build.Reason), 'Schedule'), eq($(Build.SourceBranchName), 'main') )
+
+  ${{ eq($(IsScheduledOnMain), true) }}:
+    - name: Configuration
+      readonly: true
+      value: NightlyBuild
+  ${{ neq($(IsScheduledOnMain), true) }}:
+    - name: Configuration
+      readonly: true
+      value: Debug
 
   - name: TestsIsEnabled
     value: true
     readonly: true
-
-  - name: IsPR
-    value: eq('$(Build.Reason)', 'PullRequest')
 
 trigger: none
 
@@ -62,4 +67,102 @@ jobs:
           testResultsFormat: 'XUnit'
           testResultsFiles: '**/*.trx'
           failTaskOnFailedTests: true
-          publishRunAttachments: false
+          ${{ eq($(IsScheduledOnMain), true) }}:
+            publishRunAttachments: true
+
+  - job: Mac
+    displayName: Apple Mac OS - latest
+    workspace:
+      clean: all
+    pool:
+      vmImage: 'macOS-latest'
+    steps:
+
+      - template: templates/steps/sdk-installation.yml
+
+      - template: templates/steps/onlyCore-build&test.yml
+
+      - task: PublishTestResults@2
+        displayName: Fail, if are failed tests
+        inputs:
+          testResultsFormat: 'XUnit'
+          testResultsFiles: '**/*.trx'
+          failTaskOnFailedTests: true
+          ${{ eq($(IsScheduledOnMain), true) }}:
+            publishRunAttachments: true
+
+  - job: Windows
+    displayName: Windows - latest
+    workspace:
+      clean: all
+    pool:
+      vmImage: 'macOS-latest'
+    steps:
+
+      - template: templates/steps/sdk-installation.yml
+
+      - task: NuGetToolInstaller@1
+        displayName: Install Nuget.exe
+        inputs:
+          versionSpec: '5.x'
+
+      - task: NuGetCommand@2
+        displayName: Restore source solution
+        inputs:
+          command: 'restore'
+          restoreSolution: '$(SourceDirectory)/ReactiveElements.sln'
+          feedsToUse: 'config'
+          nugetConfigPath: '$(SourceDirectory)/nuget.config'
+          configuration: $(Configuration)
+
+      - task: VSBuild@1
+        displayName: Build source solution
+        inputs:
+          solution: '$(SourceDirectory)/ReactiveElements.sln'
+          configuration: $(Configuration)
+          maximumCpuCount: true
+          msbuildArchitecture: x64
+
+      - task: VSTest@2
+        inputs:
+          configuration: $(Configuration)
+          testSelector: 'testAssemblies'
+          testAssemblyVer2: |
+            **\*Tests.dll
+            !**\*TestAdapter.dll
+            !**\obj\**
+          searchFolder: '$(System.DefaultWorkingDirectory)'
+          runInParallel: true
+          rerunFailedTests: true
+          rerunType: basedOnTestFailureCount
+          rerunMaxAttempts: 2
+          
+          ${{ eq($(IsScheduledOnMain), true) }}:
+            codeCoverageEnabled: true
+
+      - task: PublishTestResults@2
+        displayName: Fail, if are failed tests
+        inputs:
+          testResultsFormat: 'XUnit'
+          testResultsFiles: '**/*.trx'
+          failTaskOnFailedTests: true
+          ${{ eq($(IsScheduledOnMain), true) }}:
+            publishRunAttachments: true
+
+      ${{ eq($(IsScheduledOnMain), true) }}:
+
+        - template: templates/steps/packNB-on-windows.yml
+        - template: templates/steps/push-on-windows.yml
+
+        - task: NuGetCommand@2
+          displayName: Restore Examples
+          inputs:
+            command: 'restore'
+            restoreSolution: '$(ExamplesDirectory)/Examples.sln'
+            feedsToUse: 'config'
+            nugetConfigPath: '$(ExamplesDirectory)/nuget.config'
+
+        - task: VSBuild@1
+          displayName: Build Examples
+          inputs:
+            solution: '$(ExamplesDirectory)/Examples.sln'
