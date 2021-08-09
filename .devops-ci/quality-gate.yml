@@ -12,11 +12,11 @@ variables:
   - name: IsSchedulesOnMain
     value: and( eq($(Build.Reason), 'Schedule'), eq($(Build.SourceBranchName), 'main') )
 
-  - ${{ eq($(IsScheduledOnMain), true) }}:
+  - ${{ if eq(variables['IsScheduledOnMain'], true) }}:
     - name: Configuration
       readonly: true
       value: NightlyBuild
-  - ${{ neq($(IsScheduledOnMain), true) }}:
+  - ${{ if neq(variables['IsScheduledOnMain'], true) }}:
     - name: Configuration
       readonly: true
       value: Debug
@@ -67,7 +67,7 @@ jobs:
           testResultsFormat: 'XUnit'
           testResultsFiles: '**/*.trx'
           failTaskOnFailedTests: true
-          ${{ eq($(IsScheduledOnMain), true) }}:
+          ${{ if eq(variables['IsScheduledOnMain'], true) }}:
             publishRunAttachments: true
 
   - job: Mac
@@ -88,7 +88,7 @@ jobs:
           testResultsFormat: 'XUnit'
           testResultsFiles: '**/*.trx'
           failTaskOnFailedTests: true
-          ${{ eq($(IsScheduledOnMain), true) }}:
+          ${{ if eq(variables['IsScheduledOnMain'], true) }}:
             publishRunAttachments: true
 
   - job: Windows
@@ -137,7 +137,7 @@ jobs:
           rerunType: basedOnTestFailureCount
           rerunMaxAttempts: 2
           
-          ${{ eq($(IsScheduledOnMain), true) }}:
+          ${{ if eq(variables['IsScheduledOnMain'], true) }}:
             codeCoverageEnabled: true
 
       - task: PublishTestResults@2
@@ -146,10 +146,10 @@ jobs:
           testResultsFormat: 'XUnit'
           testResultsFiles: '**/*.trx'
           failTaskOnFailedTests: true
-          ${{ eq($(IsScheduledOnMain), true) }}:
+          ${{ if eq(variables['IsScheduledOnMain'], true) }}:
             publishRunAttachments: true
 
-      - ${{ eq($(IsScheduledOnMain), true) }}:
+      - ${{ if eq(variables['IsScheduledOnMain'], true) }}:
 
         - template: templates/steps/packNB-on-windows.yml
         - template: templates/steps/push-on-windows.yml
