@@ -12,11 +12,11 @@ variables:
   - name: IsSchedulesOnMain
     value: and( eq($(Build.Reason), 'Schedule'), eq($(Build.SourceBranchName), 'main') )
 
-  ${{ eq($(IsScheduledOnMain), true) }}:
+  - ${{ eq($(IsScheduledOnMain), true) }}:
     - name: Configuration
       readonly: true
       value: NightlyBuild
-  ${{ neq($(IsScheduledOnMain), true) }}:
+  - ${{ neq($(IsScheduledOnMain), true) }}:
     - name: Configuration
       readonly: true
       value: Debug
@@ -149,7 +149,7 @@ jobs:
           ${{ eq($(IsScheduledOnMain), true) }}:
             publishRunAttachments: true
 
-      ${{ eq($(IsScheduledOnMain), true) }}:
+      - ${{ eq($(IsScheduledOnMain), true) }}:
 
         - template: templates/steps/packNB-on-windows.yml
         - template: templates/steps/push-on-windows.yml
