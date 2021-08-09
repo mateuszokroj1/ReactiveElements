@@ -16,7 +16,7 @@ variables:
     - name: Configuration
       readonly: true
       value: NightlyBuild
-  - ${{ if neq(variables['IsScheduledOnMain'], true) }}:
+  - ${{ if ne(variables['IsScheduledOnMain'], true) }}:
     - name: Configuration
       readonly: true
       value: Debug
