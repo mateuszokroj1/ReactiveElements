@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.1-windows;net5-windows</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+    <PackageLicenseExpression>GIT</PackageLicenseExpression>
+    <Version>1.0.0</Version>
+    <Authors>Mateusz Okrój</Authors>
+    <PackageReleaseNotes>This is prerelease version of this library.</PackageReleaseNotes>
+    <Description>Helpers class for binding ReactiveElements in WPF .NET Core</Description>
+    <Product>ReactiveElements.WPFCore</Product>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageTags>reactive wpf observable elements property command value notify observer binding</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Configurations>Debug;Release;NightlyBuild</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="icon.ico" />
+    <None Remove="icon.png" />
+    <None Include="icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+    <ProjectReference Include="..\ReactiveElements\ReactiveElements.csproj">
+      <Project>{9106a735-3a3f-431b-a054-56ae68c31198}</Project>
+      <Name>ReactiveElements</Name>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)' == 'NightlyBuild'">
+    <PackageReference Include="ReactiveElements">
+      <Version>*-*</Version>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <PackageReference Include="ReactiveElements">
+      <Version>1.*</Version>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="icon.ico" />
+    <Resource Include="icon.png" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,20 @@
+steps:
+
+  - task: NuGetCommand@2
+    displayName: Restore solution
+    timeoutInMinutes: 10
+    inputs:
+      command: 'restore'
+      restoreSolution: '$(SourceDirectory)/ReactiveElements.sln'
+      feedsToUse: 'config'
+      nugetConfigPath: '$(SourceDirectory)/nuget.config'
+      configuration: $(Configuration)
+
+  - task: VSBuild@1
+    displayName: Build solution
+    timeoutInMinutes: 30
+    inputs:
+      solution: '$(SourceDirectory)/ReactiveElements.sln'
+      configuration: $(Configuration)
+      maximumCpuCount: true
+      msbuildArchitecture: 'x64'

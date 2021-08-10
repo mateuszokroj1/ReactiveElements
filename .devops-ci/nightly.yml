@@ -1,0 +1,102 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+name: ReactiveElements - nightly build
+
+variables:
+
+  - template: templates/variables.yml
+
+  - name: Configuration
+    value: Debug
+    readonly: true
+
+  - name: TestsIsEnabled
+    value: true
+    readonly: true
+
+schedules:
+
+  - cron: "5 0 * * *"
+    displayName: Daily nightly build
+    branches:
+      include:
+        - Features/*
+        - Fix/*
+    batch: true
+    always: false
+
+trigger: none
+
+pr:
+  branches:
+   exclude:
+     - main
+     - Feature/*
+     - Fix/*
+     - Release/*
+
+jobs:
+
+  - job: Linux
+    displayName: Linux Ubuntu - latest
+    pool:
+      vmImage: ubuntu-latest
+    workspace:
+      clean: all
+    steps:
+
+      - template: templates/steps/sdk-installation.yml
+
+      - template: templates/steps/onlyCore-build&test.yml
+
+  - job: Mac
+    displayName: Apple Mac OS - latest
+    pool:
+      vmImage: macOS-latest
+    workspace:
+      clean: all
+    steps:
+
+      - template: templates/steps/sdk-installation.yml
+
+      - template: templates/steps/onlyCore-build&test.yml
+
+  - job: Windows
+    displayName: Windows - latest
+    pool:
+      vmImage: windows-latest
+    workspace:
+      clean: all
+    steps:
+
+      - template: templates/steps/sdk-installation.yml
+
+      - task: NuGetToolInstaller@1
+        displayName: Install Nuget.exe
+        timeoutInMinutes: 2
+        inputs:
+          versionSpec: '5.x'
+
+      - template: templates/steps/windows-restore&build.yml
+
+      - task: VSTest@2
+        displayName: Test solution
+        timeoutInMinutes: 60
+        inputs:
+          testSelector: 'testAssemblies'
+          testAssemblyVer2: |
+            **\*Tests.dll
+            !**\*TestAdapter.dll
+            !**\obj\**
+          searchFolder: '$(System.DefaultWorkingDirectory)'
+          runInParallel: true
+          codeCoverageEnabled: true
+          rerunFailedTests: true
+          rerunType: 'basedOnTestFailureCount'
+          rerunMaxAttempts: '2'
+          configuration: $(Configuration)
+
+      - template: templates/steps/packNB-on-windows.yml

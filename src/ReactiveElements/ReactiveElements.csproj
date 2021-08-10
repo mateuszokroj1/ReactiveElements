@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net46;netcoreapp3.1;net5</TargetFrameworks>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <Authors>Mateusz Okrój</Authors>
+    <Company>Mateusz Okrój</Company>
+    <Product>Reactive Elements</Product>
+    <Description>Library with most used reactive elements, like property, command and sheduled value checker.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>reactive observable elements property command value notify observer binding</PackageTags>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <SignAssembly>false</SignAssembly>
+    <PackageReleaseNotes>This is prerelease version of this package.</PackageReleaseNotes>
+    <Version>1.0.0</Version>
+    <PackageIcon>icon.png</PackageIcon>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <Configurations>Debug;Release;NightlyBuild</Configurations>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.*" />
+    <PackageReference Include="System.Reactive" Version="4.*" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Resource Include="icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </Resource>
+  </ItemGroup>
+
+</Project>

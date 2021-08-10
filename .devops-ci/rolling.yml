@@ -1,0 +1,72 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+name: ReactiveElements - rolling build
+
+variables:
+
+  - template: templates/variables.yml
+
+  - name: TestsIsEnabled
+    value: false
+    readonly: true
+
+  - name: Configuration
+    value: Debug
+    readonly: true
+
+trigger:
+ branches:
+  include:
+     - main
+     - Feature/*
+     - Fix/*
+     - Release/*
+
+pr:
+  branches:
+   exclude:
+     - main
+     - Feature/*
+     - Fix/*
+     - Release/*
+
+jobs:
+
+  - job: Linux
+    displayName: Linux Ubuntu - latest
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+
+      - template: templates/steps/sdk-installation.yml
+
+      - template: templates/steps/onlyCore-build&test.yml
+
+  - job: Mac
+    displayName: Apple Mac OS - latest
+    pool:
+      vmImage: macOS-latest
+    steps:
+
+      - template: templates/steps/sdk-installation.yml
+
+      - template: templates/steps/onlyCore-build&test.yml
+
+  - job: Windows
+    displayName: Windows - latest
+    pool:
+      vmImage: windows-latest
+    steps:
+
+      - template: templates/steps/sdk-installation.yml
+
+      - task: NuGetToolInstaller@1
+        displayName: Install Nuget.exe
+        timeoutInMinutes: 2
+        inputs:
+          versionSpec: '5.x'
+
+      - template: templates/steps/windows-restore&build.yml

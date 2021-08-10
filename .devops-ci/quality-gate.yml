@@ -1,0 +1,161 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+name: ReactiveElements - quality gate
+
+variables:
+
+  - template: templates/variables.yml
+
+  - name: IsSchedulesOnMain
+    value: and( eq($(Build.Reason), 'Schedule'), eq($(Build.SourceBranchName), 'main') )
+
+  - ${{ if eq(variables['IsScheduledOnMain'], true) }}:
+    - name: Configuration
+      readonly: true
+      value: NightlyBuild
+  - ${{ if ne(variables['IsScheduledOnMain'], true) }}:
+    - name: Configuration
+      readonly: true
+      value: Debug
+
+  - name: TestsIsEnabled
+    value: true
+    readonly: true
+
+trigger: none
+
+pr:
+  autoCancel: true
+  drafts: false
+  branches:
+    include:
+      - main
+      - Release/*
+    exclude:
+      - Feature/*
+      - Fix/*
+
+schedules:
+  - cron: "5 0 * * *"
+    displayName: Daily nightly build on main
+    branches:
+      include:
+        - main
+    batch: true
+    always: false
+
+jobs:
+
+  - job: Linux
+    displayName: Linux Ubuntu - latest
+    workspace:
+      clean: all
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+
+      - template: templates/steps/sdk-installation.yml
+
+      - template: templates/steps/onlyCore-build&test.yml
+
+      - task: PublishTestResults@2
+        displayName: Fail, if are failed tests
+        timeoutInMinutes: 2
+        inputs:
+          testResultsFormat: 'XUnit'
+          testResultsFiles: '**/*.trx'
+          failTaskOnFailedTests: true
+          ${{ if eq(variables['IsScheduledOnMain'], true) }}:
+            publishRunAttachments: true
+
+  - job: Mac
+    displayName: Apple Mac OS - latest
+    workspace:
+      clean: all
+    pool:
+      vmImage: 'macOS-latest'
+    steps:
+
+      - template: templates/steps/sdk-installation.yml
+
+      - template: templates/steps/onlyCore-build&test.yml
+
+      - task: PublishTestResults@2
+        displayName: Fail, if are failed tests
+        timeoutInMinutes: 2
+        inputs:
+          testResultsFormat: 'XUnit'
+          testResultsFiles: '**/*.trx'
+          failTaskOnFailedTests: true
+          ${{ if eq(variables['IsScheduledOnMain'], true) }}:
+            publishRunAttachments: true
+
+  - job: Windows
+    displayName: Windows - latest
+    workspace:
+      clean: all
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+
+      - template: templates/steps/sdk-installation.yml
+
+      - task: NuGetToolInstaller@1
+        displayName: Install Nuget.exe
+        timeoutInMinutes: 2
+        inputs:
+          versionSpec: '5.x'
+
+      - template: templates/steps/windows-restore&build.yml
+
+      - task: VSTest@2
+        displayName: Test source solution
+        timeoutInMinutes: 60
+        inputs:
+          configuration: $(Configuration)
+          testSelector: 'testAssemblies'
+          testAssemblyVer2: |
+            **\*Tests.dll
+            !**\*TestAdapter.dll
+            !**\obj\**
+          searchFolder: '$(System.DefaultWorkingDirectory)'
+          runInParallel: true
+          rerunFailedTests: true
+          rerunType: basedOnTestFailureCount
+          rerunMaxAttempts: 2
+          
+          ${{ if eq(variables['IsScheduledOnMain'], true) }}:
+            codeCoverageEnabled: true
+
+      - task: PublishTestResults@2
+        displayName: Fail, if are failed tests
+        timeoutInMinutes: 2
+        inputs:
+          testResultsFormat: 'XUnit'
+          testResultsFiles: '**/*.trx'
+          failTaskOnFailedTests: true
+          ${{ if eq(variables['IsScheduledOnMain'], true) }}:
+            publishRunAttachments: true
+
+      - ${{ if eq(variables['IsScheduledOnMain'], true) }}:
+
+        - template: templates/steps/packNB-on-windows.yml
+        - template: templates/steps/push-on-windows.yml
+
+        - task: NuGetCommand@2
+          displayName: Restore Examples
+          timeoutInMinutes: 5
+          inputs:
+            command: 'restore'
+            restoreSolution: '$(ExamplesDirectory)/Examples.sln'
+            feedsToUse: 'config'
+            nugetConfigPath: '$(ExamplesDirectory)/nuget.config'
+
+        - task: VSBuild@1
+          displayName: Build Examples
+          timeoutInMinutes: 5
+          inputs:
+            solution: '$(ExamplesDirectory)/Examples.sln'
