@@ -40,8 +40,8 @@ namespace ReactiveElements.Tests
         [Fact]
         public void FromBindableModel_WhenArgumentIsNull_ShouldThrowArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => ReactiveProperty<bool>.FromBindableModel<ReactiveProperty<bool>>(null, t => t.Value));
-            Assert.Throws<ArgumentNullException>(() => ReactiveProperty<bool>.FromBindableModel(new ReactiveProperty<bool>(), null));
+            Assert.Throws<ArgumentNullException>(() => Property<bool>.FromBindableModel<Property<bool>>(null, t => t.Value));
+            Assert.Throws<ArgumentNullException>(() => Property<bool>.FromBindableModel(new ReactiveProperty<bool>(), null));
         }
 
         [Fact]
@@ -50,8 +50,8 @@ namespace ReactiveElements.Tests
             TestModel model = new TestModel();
             model.Property1 = string.Empty;
 
-            var property = ReactiveProperty<string>.FromBindableModel(model, m => m.Property1);
-            Assert.IsType<ReactiveProperty<string>>(property);
+            var property = Property<string>.FromBindableModel(model, m => m.Property1);
+            Assert.IsType<Property<string>>(property);
             string val = null;
             property.Subscribe(newVal => val = newVal);
             model.Property1 = "TEST";

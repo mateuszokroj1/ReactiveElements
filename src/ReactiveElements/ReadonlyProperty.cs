@@ -6,37 +6,50 @@ using ReactiveElements.Observable;
 
 namespace ReactiveElements
 {
+    /// <summary>
+    /// Reactive property with read-only access
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     [Bindable(true, BindingDirection.OneWay), DefaultBindingProperty(nameof(Value)), DefaultProperty(nameof(Value))]
-    public class ReadonlyReactiveProperty<T> : IReadonlyReactiveProperty<T>
+    public class ReadonlyProperty<T> : IReadonlyProperty<T>
     {
         #region Fields
 
-        internal T value;
+        internal T? value;
         private bool disposedValue;
 
-        /// <summary>
-        /// Notifies about changes in properties
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        private readonly List<IObserver<T>> observers = new List<IObserver<T>>();
-        private readonly IDisposable observableSourceUnsubscriber;
-        private readonly IObservable<T> observableSource;
+        private readonly IList<IObserver<T>> observers = new List<IObserver<T>>();
+        private readonly IDisposable? observableSourceUnsubscriber;
+        private readonly IObservable<T>? observableSource;
 
         #endregion
 
         #region Constructors
 
-        public ReadonlyReactiveProperty() : this(default(T)) { }
+        /// <summary>
+        /// Initialize <see cref="ReadonlyProperty{T}"/> with default value of data type
+        /// </summary>
+        public ReadonlyProperty() : this(default(T)!) { }
 
-        public ReadonlyReactiveProperty(T value)
+        /// <summary>
+        /// Initialize <see cref="ReadonlyProperty{T}"/> with given init value
+        /// </summary>
+        /// <param name="value">Init value</param>
+        public ReadonlyProperty(T? value)
         {
             this.value = value;
             this.observableSourceUnsubscriber = null;
             this.observableSource = null;
         }
 
-        public ReadonlyReactiveProperty(IObservable<T> observableSource)
+        /// <summary>
+        /// Initialize <see cref="ReadonlyProperty{T}"/> with given <see cref="IObservable{T}"/> value source
+        /// </summary>
+        /// <param name="observableSource">Value source</param>
+        /// <exception cref="ArgumentNullException" />
+        public ReadonlyProperty(IObservable<T> observableSource)
         {
             this.observableSource = observableSource ?? throw new ArgumentNullException(nameof(observableSource));
             this.observableSourceUnsubscriber = this.observableSource.Subscribe(this);
@@ -47,10 +60,7 @@ namespace ReactiveElements
         #region Properties
 
         [Bindable(true, BindingDirection.OneWay)]
-        public virtual T Value
-        {
-            get => GetValue();
-        }
+        public virtual T? Value => GetValue();
 
         #endregion
 
@@ -59,12 +69,12 @@ namespace ReactiveElements
         private void NotifySubscribers()
         {
             foreach (var observer in this.observers)
-                observer.OnNext(this.value);
+                observer.OnNext(this.value!);
         }
 
-        public T GetValue() => this.value;
+        public T? GetValue() => this.value;
 
-        protected virtual void SetValue(T value)
+        protected virtual void SetValue(T? value)
         {
             if (!Equals(this.value, value))
             {
@@ -78,10 +88,10 @@ namespace ReactiveElements
         /// <exception cref="ArgumentException" />
         protected virtual void SetValue(object value)
         {
-            if (value.GetType() != typeof(T))
+            if (value is not T)
                 throw new ArgumentException($"Bad type. Required type {nameof(T)}.");
 
-            SetValue((dynamic)value);
+            SetValue((T)value);
         }
 
         public IDisposable Subscribe(IObserver<T> observer)
@@ -89,33 +99,9 @@ namespace ReactiveElements
             if (!this.observers.Contains(observer))
                 this.observers.Add(observer);
 
-            observer.OnNext(this.value);
+            observer.OnNext(this.value!);
 
             return new Unsubscriber<T>(this.observers, observer);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposedValue)
-            {
-                if (disposing)
-                {
-                    this.observableSourceUnsubscriber?.Dispose();
-
-                    foreach (var observer in this.observers)
-                        observer.OnCompleted();
-
-                    this.observers.Clear();
-                }
-
-                this.disposedValue = true;
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         public TypeCode GetTypeCode() => TypeCode.Object;
@@ -134,8 +120,31 @@ namespace ReactiveElements
 
         public void OnNext(T value) => SetValue(value);
 
-        public static implicit operator T(ReadonlyReactiveProperty<T> readonlyReactiveProperty)
-        => readonlyReactiveProperty.Value;
+        public static implicit operator T(ReadonlyProperty<T> readonlyReactiveProperty) => readonlyReactiveProperty.Value!;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposedValue)
+            {
+                if (disposing)
+                {
+                    this.observableSourceUnsubscriber?.Dispose();
+
+                    foreach (var observer in this.observers)
+                        observer?.OnCompleted();
+
+                    this.observers.Clear();
+                }
+
+                this.disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         #endregion
     }

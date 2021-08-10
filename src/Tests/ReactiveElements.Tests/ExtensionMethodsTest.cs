@@ -22,7 +22,7 @@ namespace ReactiveElements.Tests
         {
             var model = new TestModel();
             var property = model.GetReactiveProperty(m => m.Property1);
-            Assert.IsType<ReactiveProperty<string>>(property);
+            Assert.IsType<Property<string>>(property);
             Assert.Equal(model.Property1, property.Value);
         }
 
@@ -44,7 +44,7 @@ namespace ReactiveElements.Tests
         [Fact]
         public void ToReactiveProperty_ShouldReturnReactiveProperty()
         {
-            ReactiveProperty<int> property = System.Reactive.Linq.Observable.Range(0, 2).ToReactiveProperty();
+            Property<int> property = System.Reactive.Linq.Observable.Range(0, 2).ToReactiveProperty();
             Assert.NotNull(property);
         }
 

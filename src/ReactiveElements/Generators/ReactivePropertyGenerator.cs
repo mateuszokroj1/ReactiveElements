@@ -5,9 +5,9 @@ using System.Reflection;
 
 namespace ReactiveElements.Generators
 {
-    public static class ReactivePropertyGenerator
+    internal static class ReactivePropertyGenerator
     {
-        public static ReactiveProperty<TProperty> GenerateReactivePropertyFromPropertyChangedEventModel<TModel, TProperty>(TModel model, PropertyInfo propertyInfo)
+        public static Property<TProperty> GenerateReactivePropertyFromPropertyChangedEventModel<TModel, TProperty>(TModel model, PropertyInfo propertyInfo)
             where TModel : INotifyPropertyChanged
         {
             if (model == null)
@@ -24,7 +24,7 @@ namespace ReactiveElements.Generators
             .Where(args => args?.EventArgs.PropertyName == propertyInfo.Name)
             .Select(args => (TProperty)(dynamic)propertyInfo.GetValue(model));
 
-            return new ReactiveProperty<TProperty>(observable);
+            return new Property<TProperty>(observable);
         }
     }
 }

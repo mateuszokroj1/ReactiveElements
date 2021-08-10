@@ -45,7 +45,7 @@ namespace ReactiveElements.Wpf
                             return;
                         }
                     }
-                    else if (Source.GetType().GetGenericTypeDefinition() == typeof(ReactiveProperty<>))
+                    else if (Source.GetType().GetGenericTypeDefinition() == typeof(Property<>))
                     {
                         if (string.IsNullOrEmpty(value?.Path))
                         {
@@ -84,7 +84,7 @@ namespace ReactiveElements.Wpf
                             base.Path = new PropertyPath(value.Path + ".Value");
                             Mode = System.Windows.Data.BindingMode.OneWay;
                         }
-                        else if (Source.GetType().GetGenericTypeDefinition() == typeof(ReactiveProperty<>))
+                        else if (Source.GetType().GetGenericTypeDefinition() == typeof(Property<>))
                         {
                             base.Path = new PropertyPath(value.Path + ".Value");
                             Mode = System.Windows.Data.BindingMode.TwoWay;
