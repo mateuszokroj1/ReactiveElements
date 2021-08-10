@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{943C74BB-31F9-4133-A210-A8A840DF235E}</ProjectGuid>
+    <ProjectGuid>{6AE53615-8DF2-4729-9B83-F4369EC5115F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ReactiveElements.Wpf.Tests</RootNamespace>
