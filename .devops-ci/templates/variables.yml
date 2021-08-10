@@ -13,37 +13,37 @@ variables:
     readonly: true
 
   - name: Core.MajorVersion
-    value: 1
+    value: 0
 
   - name: Core.MinorVersion
-    value: 0
+    value: 9
 
   - name: Core.PatchVersion
     value: 0
 
   - name: Wpf.MajorVersion
-    value: 1
+    value: 0
 
   - name: Wpf.MinorVersion
-    value: 0
+    value: 9
 
   - name: Wpf.PatchVersion
     value: 0
 
   - name: Uwp.MajorVersion
-    value: 1
+    value: 0
 
   - name: Uwp.MinorVersion
-    value: 0
+    value: 9
 
   - name: Uwp.PatchVersion
     value: 0
 
   - name: WpfCore.MajorVersion
-    value: 1
+    value: 0
 
   - name: WpfCore.MinorVersion
-    value: 0
+    value: 9
 
   - name: WpfCore.PatchVersion
     value: 0
