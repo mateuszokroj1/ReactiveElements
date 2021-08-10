@@ -65,6 +65,7 @@ jobs:
 
       - task: NuGetToolInstaller@1
         displayName: Install Nuget.exe
+        timeoutInMinutes: 2
         inputs:
           versionSpec: '5.x'
 

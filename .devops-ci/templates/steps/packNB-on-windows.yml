@@ -2,6 +2,7 @@ steps:
 
 - task: NuGetCommand@2
   displayName: Pack ReactiveElements
+  timeoutInMinutes: 2
   inputs:
     command: 'pack'
     packagesToPack: '**/*.csproj/ReactiveElements.csproj'
@@ -13,6 +14,7 @@ steps:
 
 - task: NuGetCommand@2
   displayName: Pack ReactiveElements.Wpf
+  timeoutInMinutes: 2
   inputs:
     command: 'pack'
     packagesToPack: '$(SourceDirectory)/ReactiveElements.Wpf/ReactiveElements.Wpf.nuspec'
@@ -24,6 +26,7 @@ steps:
 
 - task: DotNetCoreCLI@2
   displayName: Pack ReactiveElements.WpfCore
+  timeoutInMinutes: 2
   inputs:
     command: 'pack'
     packagesToPack: '**/ReactiveElements.WpfCore.csproj'
@@ -35,6 +38,7 @@ steps:
 
 - task: NuGetCommand@2
   displayName: Pack ReactiveElements.Uwp
+  timeoutInMinutes: 2
   inputs:
     command: 'pack'
     packagesToPack: '$(SourceDirectory)/ReactiveElements.Uwp/ReactiveElements.Uwp.nuspec'

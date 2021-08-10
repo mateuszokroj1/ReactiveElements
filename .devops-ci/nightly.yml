@@ -76,28 +76,15 @@ jobs:
 
       - task: NuGetToolInstaller@1
         displayName: Install Nuget.exe
+        timeoutInMinutes: 2
         inputs:
           versionSpec: '5.x'
 
-      - task: NuGetCommand@2
-        displayName: Restore solution
-        inputs:
-          command: 'restore'
-          restoreSolution: '$(SourceDirectory)/ReactiveElements.sln'
-          feedsToUse: 'config'
-          nugetConfigPath: '$(SourceDirectory)/nuget.config'
-          configuration: $(Configuration)
-
-      - task: VSBuild@1
-        displayName: Build solution
-        inputs:
-          solution: '$(SourceDirectory)/ReactiveElements.sln'
-          configuration: $(Configuration)
-          maximumCpuCount: true
-          msbuildArchitecture: 'x64'
+      - template: templates/steps/windows-restore&build.yml
 
       - task: VSTest@2
         displayName: Test solution
+        timeoutInMinutes: 60
         inputs:
           testSelector: 'testAssemblies'
           testAssemblyVer2: |

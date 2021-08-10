@@ -63,6 +63,7 @@ jobs:
 
       - task: PublishTestResults@2
         displayName: Fail, if are failed tests
+        timeoutInMinutes: 2
         inputs:
           testResultsFormat: 'XUnit'
           testResultsFiles: '**/*.trx'
@@ -84,6 +85,7 @@ jobs:
 
       - task: PublishTestResults@2
         displayName: Fail, if are failed tests
+        timeoutInMinutes: 2
         inputs:
           testResultsFormat: 'XUnit'
           testResultsFiles: '**/*.trx'
@@ -103,28 +105,15 @@ jobs:
 
       - task: NuGetToolInstaller@1
         displayName: Install Nuget.exe
+        timeoutInMinutes: 2
         inputs:
           versionSpec: '5.x'
 
-      - task: NuGetCommand@2
-        displayName: Restore source solution
-        inputs:
-          command: 'restore'
-          restoreSolution: '$(SourceDirectory)/ReactiveElements.sln'
-          feedsToUse: 'config'
-          nugetConfigPath: '$(SourceDirectory)/nuget.config'
-          configuration: $(Configuration)
-
-      - task: VSBuild@1
-        displayName: Build source solution
-        inputs:
-          solution: '$(SourceDirectory)/ReactiveElements.sln'
-          configuration: $(Configuration)
-          maximumCpuCount: true
-          msbuildArchitecture: x64
+      - template: templates/steps/windows-restore&build.yml
 
       - task: VSTest@2
         displayName: Test source solution
+        timeoutInMinutes: 60
         inputs:
           configuration: $(Configuration)
           testSelector: 'testAssemblies'
@@ -143,6 +132,7 @@ jobs:
 
       - task: PublishTestResults@2
         displayName: Fail, if are failed tests
+        timeoutInMinutes: 2
         inputs:
           testResultsFormat: 'XUnit'
           testResultsFiles: '**/*.trx'
@@ -157,6 +147,7 @@ jobs:
 
         - task: NuGetCommand@2
           displayName: Restore Examples
+          timeoutInMinutes: 5
           inputs:
             command: 'restore'
             restoreSolution: '$(ExamplesDirectory)/Examples.sln'
@@ -165,5 +156,6 @@ jobs:
 
         - task: VSBuild@1
           displayName: Build Examples
+          timeoutInMinutes: 5
           inputs:
             solution: '$(ExamplesDirectory)/Examples.sln'

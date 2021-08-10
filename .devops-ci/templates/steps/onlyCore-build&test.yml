@@ -2,6 +2,7 @@ steps:
 
   - task: DotNetCoreCLI@2
     displayName: Restore ReactiveElements.csproj
+    timeoutInMinutes: 5
     inputs:
       command: 'restore'
       projects: '$(SourceDirectory)/ReactiveElements/ReactiveElements.csproj'
@@ -11,6 +12,7 @@ steps:
 
   - task: DotNetCoreCLI@2
     displayName: Restore ReactiveElements.Tests.csproj
+    timeoutInMinutes: 5
     condition: eq(variables['TestsIsEnabled'], true)
     inputs:
       command: 'restore'
@@ -21,6 +23,7 @@ steps:
 
   - task: DotNetCoreCLI@2
     displayName: Build ReactiveElements.csproj
+    timeoutInMinutes: 15
     inputs:
       command: 'build'
       projects: '$(SourceDirectory)/ReactiveElements/ReactiveElements.csproj'
@@ -28,6 +31,7 @@ steps:
   
   - task: DotNetCoreCLI@2
     displayName: Build ReactiveElements.Tests.csproj
+    timeoutInMinutes: 15
     condition: eq(variables['TestsIsEnabled'], true)
     inputs:
       command: 'build'
@@ -36,6 +40,7 @@ steps:
 
   - task: DotNetCoreCLI@2
     displayName: Test ReactiveElements.Tests.csproj
+    timeoutInMinutes: 30
     condition: eq(variables['TestsIsEnabled'], true)
     inputs:
       command: 'test'
