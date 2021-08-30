@@ -9,7 +9,7 @@ namespace ReactiveElements
     /// <summary>
     /// Reactive property with read-only access
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Type of value</typeparam>
     [Bindable(true, BindingDirection.OneWay), DefaultBindingProperty(nameof(Value)), DefaultProperty(nameof(Value))]
     public class ReadonlyProperty<T> : IReadonlyProperty<T>
     {
@@ -19,10 +19,10 @@ namespace ReactiveElements
         private bool disposedValue;
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        public event PropertyChangingEventHandler? PropertyChanging;
 
         private readonly IList<IObserver<T>> observers = new List<IObserver<T>>();
         private readonly IDisposable? observableSourceUnsubscriber;
-        private readonly IObservable<T>? observableSource;
 
         #endregion
 
@@ -41,7 +41,6 @@ namespace ReactiveElements
         {
             this.value = value;
             this.observableSourceUnsubscriber = null;
-            this.observableSource = null;
         }
 
         /// <summary>
@@ -51,15 +50,17 @@ namespace ReactiveElements
         /// <exception cref="ArgumentNullException" />
         public ReadonlyProperty(IObservable<T> observableSource)
         {
-            this.observableSource = observableSource ?? throw new ArgumentNullException(nameof(observableSource));
-            this.observableSourceUnsubscriber = this.observableSource.Subscribe(this);
+            if(observableSource is null)
+                throw new ArgumentNullException(nameof(observableSource));
+
+            this.observableSourceUnsubscriber = observableSource.Subscribe(this);
         }
 
         #endregion
 
         #region Properties
 
-        [Bindable(true, BindingDirection.OneWay)]
+        [Bindable(true, BindingDirection.OneWay), Browsable(true)]
         public virtual T? Value => GetValue();
 
         #endregion
@@ -78,6 +79,8 @@ namespace ReactiveElements
         {
             if (!Equals(this.value, value))
             {
+                PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(nameof(Value)));
+
                 this.value = value;
 
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Value)));
@@ -85,13 +88,12 @@ namespace ReactiveElements
             }
         }
 
-        /// <exception cref="ArgumentException" />
-        protected virtual void SetValue(object value)
+        protected virtual void SetValue(object? value)
         {
-            if (value is not T)
-                throw new ArgumentException($"Bad type. Required type {nameof(T)}.");
-
-            SetValue((T)value);
+            if(value is null)
+                SetValue(default);
+            else
+                SetValue((T)Convert.ChangeType(value, typeof(T)));
         }
 
         public IDisposable Subscribe(IObserver<T> observer)
@@ -104,7 +106,7 @@ namespace ReactiveElements
             return new Unsubscriber<T>(this.observers, observer);
         }
 
-        public TypeCode GetTypeCode() => TypeCode.Object;
+        #region IObservator
 
         public void OnCompleted()
         {
@@ -120,7 +122,13 @@ namespace ReactiveElements
 
         public void OnNext(T value) => SetValue(value);
 
+        #endregion
+
         public static implicit operator T(ReadonlyProperty<T> readonlyReactiveProperty) => readonlyReactiveProperty.Value!;
+
+        public TypeCode GetTypeCode() => TypeCode.Object;
+
+        #region IDisposable
 
         protected virtual void Dispose(bool disposing)
         {
@@ -145,6 +153,8 @@ namespace ReactiveElements
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        #endregion
 
         #endregion
     }

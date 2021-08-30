@@ -8,7 +8,7 @@ namespace ReactiveElements
     /// Interface for ReadonlyReactiveProperty class
     /// </summary>
     /// <typeparam name="T">Type of property value</typeparam>
-    public interface IReadonlyProperty<T> : ISubject<T>, INotifyPropertyChanged, IDisposable
+    public interface IReadonlyProperty<T> : ISubject<T>, INotifyPropertyChanged, INotifyPropertyChanging, IDisposable
     {
         /// <summary>
         /// Represents current value of property

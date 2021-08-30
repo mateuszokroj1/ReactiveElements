@@ -36,12 +36,11 @@ namespace ReactiveElements
 
         public new void SetValue(T? value) => base.SetValue(value);
 
-        /// <exception cref="ArgumentException" />
         public new void SetValue(object value) => base.SetValue(value);
 
         public static Property<T> FromBindableModel<TModel>(TModel model, Expression<Func<TModel, T>> propertySelectionExpression)
             where TModel : INotifyPropertyChanged =>
-            model == null ? throw new ArgumentNullException(nameof(model)) : model.GetReactiveProperty(propertySelectionExpression);
+            model is null ? throw new ArgumentNullException(nameof(model)) : model.GetReactiveProperty(propertySelectionExpression);
 
         #endregion
     }
