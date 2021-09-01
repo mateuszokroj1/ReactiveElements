@@ -22,9 +22,11 @@ namespace ReactiveElements.Generators
                 handler => model.PropertyChanged -= handler
             )
             .Where(args => args?.EventArgs.PropertyName == propertyInfo.Name)
-            .Select(args => (TProperty)(dynamic)propertyInfo.GetValue(model));
+            .Select(args => (TProperty)propertyInfo.GetValue(model));
 
-            return new Property<TProperty>(observable);
+            var result = new Property<TProperty>(observable);
+            result.Value = (TProperty)propertyInfo.GetValue(model);
+            return result;
         }
     }
 }

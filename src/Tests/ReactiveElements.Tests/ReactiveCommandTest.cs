@@ -8,7 +8,7 @@ namespace ReactiveElements.Tests
     {
         #region Constructor
 
-        [Fact]
+        /*[Fact]
         public void Constructor_WhenArgumentIsNull_ShouldThrowArgumentNullException()
         {
             object argument;
@@ -17,7 +17,7 @@ namespace ReactiveElements.Tests
             Action action2 = null;
             Assert.Throws<ArgumentNullException>(() => new ReactiveCommand(action1, new ReadonlyProperty<bool>(true)));
             Assert.Throws<ArgumentNullException>(() => new ReactiveCommand(action2, new ReadonlyProperty<bool>(true)));
-        }
+        }*/
 
         [Fact]
         public void Constructor1_WhenArgumentsIsValid_ShouldBeInitialized()
