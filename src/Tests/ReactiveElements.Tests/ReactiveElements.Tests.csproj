@@ -26,9 +26,4 @@
     <ProjectReference Include="..\..\ReactiveElements\ReactiveElements.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Fixtures\" />
-    <Folder Include="Disposables\" />
-  </ItemGroup>
-
 </Project>

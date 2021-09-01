@@ -15,8 +15,8 @@ namespace ReactiveElements.Tests
             Assert.Throws<ArgumentNullException>(() => new ReactiveCommand(arg => argument = arg, null));
             Action<object> action1 = null;
             Action action2 = null;
-            Assert.Throws<ArgumentNullException>(() => new ReactiveCommand(action1, new ReadonlyReactiveProperty<bool>(true)));
-            Assert.Throws<ArgumentNullException>(() => new ReactiveCommand(action2, new ReadonlyReactiveProperty<bool>(true)));
+            Assert.Throws<ArgumentNullException>(() => new ReactiveCommand(action1, new ReadonlyProperty<bool>(true)));
+            Assert.Throws<ArgumentNullException>(() => new ReactiveCommand(action2, new ReadonlyProperty<bool>(true)));
         }
 
         [Fact]
@@ -24,7 +24,7 @@ namespace ReactiveElements.Tests
         {
             bool executed = false;
             bool eventTriggered = false;
-            var canExecuteProperty = new ReactiveProperty<bool>(false);
+            var canExecuteProperty = new Property<bool>(false);
             var command = new ReactiveCommand(() => executed = true, canExecuteProperty);
             command.CanExecuteChanged += (sender, e) => eventTriggered = true;
 
@@ -43,7 +43,7 @@ namespace ReactiveElements.Tests
         {
             bool executed = false;
             bool eventTriggered = false;
-            var canExecuteProperty = new ReactiveProperty<bool>(false);
+            var canExecuteProperty = new Property<bool>(false);
             var command = new ReactiveCommand(parameter => executed = true, canExecuteProperty);
             command.CanExecuteChanged += (sender, e) => eventTriggered = true;
 
@@ -65,11 +65,11 @@ namespace ReactiveElements.Tests
         public void CanExecute_ShouldReturnBoolWithoutParameter()
         {
             bool executed = false;
-            var command = new ReactiveCommand(() => executed = true, new ReactiveProperty<bool>(true));
+            var command = new ReactiveCommand(() => executed = true, new Property<bool>(true));
             Assert.True(command.CanExecute(null));
             Assert.True(command.CanExecute(324));
 
-            command = new ReactiveCommand(parameter => executed = true, new ReactiveProperty<bool>(false));
+            command = new ReactiveCommand(parameter => executed = true, new Property<bool>(false));
             Assert.False(command.CanExecute(null));
             Assert.False(command.CanExecute(""));
         }
@@ -78,12 +78,12 @@ namespace ReactiveElements.Tests
         public void Execute_ShouldRun()
         {
             bool executed = false;
-            var command = new ReactiveCommand(() => executed = true, new ReactiveProperty<bool>(true));
+            var command = new ReactiveCommand(() => executed = true, new Property<bool>(true));
             command.Execute(null);
             Assert.True(executed);
 
             executed = false;
-            command = new ReactiveCommand(parameter => executed = true, new ReactiveProperty<bool>(false));
+            command = new ReactiveCommand(parameter => executed = true, new Property<bool>(false));
             command.Execute(null);
             command.CanExecute("");
             Assert.True(executed);
@@ -93,7 +93,7 @@ namespace ReactiveElements.Tests
         public void OnNext_ShouldChangeCanExecuteValue()
         {
             bool executed = false;
-            var command = new ReactiveCommand(() => executed = true, new ReactiveProperty<bool>(true));
+            var command = new ReactiveCommand(() => executed = true, new Property<bool>(true));
             Assert.True(command.CanExecute(null));
 
             command.OnNext(false);
@@ -107,7 +107,7 @@ namespace ReactiveElements.Tests
         public void OnCompleted_ShouldNotThrow()
         {
             bool executed = false;
-            var command = new ReactiveCommand(() => executed = true, new ReactiveProperty<bool>(true));
+            var command = new ReactiveCommand(() => executed = true, new Property<bool>(true));
             command.OnCompleted();
         }
 
@@ -115,7 +115,7 @@ namespace ReactiveElements.Tests
         public void OnError_ShouldSetLastError()
         {
             bool executed = false;
-            ReactiveCommand command = new ReactiveCommand(() => executed = true, new ReactiveProperty<bool>(true));
+            ReactiveCommand command = new ReactiveCommand(() => executed = true, new Property<bool>(true));
             var exception = new ApplicationException("TEST");
             command.OnError(exception);
         }

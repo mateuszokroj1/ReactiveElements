@@ -15,15 +15,12 @@ namespace ReactiveElements.Helpers
 
             string propertyName;
 
-            if (propertySelectionExpression is not null &&
-                propertySelectionExpression.Body is UnaryExpression expr2 &&
-                expr2.Operand is MemberExpression expression
-            )
+            if (propertySelectionExpression?.Body is MemberExpression expression)
             {
-                if (expression.Member is null || string.IsNullOrEmpty(expression.Member.Name))
+                if (string.IsNullOrEmpty(expression?.Member?.Name))
                     throw new ArgumentException("Cannot read name of selected property.");
 
-                propertyName = expression.Member.Name;
+                propertyName = expression!.Member!.Name;
             }
             else
             {
@@ -34,7 +31,7 @@ namespace ReactiveElements.Helpers
             {
                 return model.GetType().GetProperty(propertyName);
             }
-            catch (MemberAccessException exc)
+            catch (AmbiguousMatchException exc)
             {
                 throw new ArgumentException("Not found selected property in current model.", exc);
             }

@@ -36,7 +36,7 @@ namespace ReactiveElements.Wpf
                 // When source is Reactive and Path is empty, then set Path=Value and Mode
                 if (Source?.GetType().IsGenericType ?? false)
                 {
-                    if (Source.GetType().GetGenericTypeDefinition() == typeof(ReadonlyReactiveProperty<>))
+                    if (Source.GetType().GetGenericTypeDefinition() == typeof(ReadonlyProperty<>))
                     {
                         if (string.IsNullOrEmpty(value?.Path))
                         {
@@ -79,7 +79,7 @@ namespace ReactiveElements.Wpf
 
                     if (propertyInfo?.PropertyType?.IsGenericType ?? false)
                     {
-                        if (Source.GetType().GetGenericTypeDefinition() == typeof(ReadonlyReactiveProperty<>))
+                        if (Source.GetType().GetGenericTypeDefinition() == typeof(ReadonlyProperty<>))
                         {
                             base.Path = new PropertyPath(value.Path + ".Value");
                             Mode = System.Windows.Data.BindingMode.OneWay;

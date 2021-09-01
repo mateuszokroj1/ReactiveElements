@@ -30,11 +30,8 @@ namespace ReactiveElements.Observable
         {
             if (!this.disposedValue)
             {
-                if (disposing)
-                {
-                    if (this.observers.Contains(this.observer))
-                        this.observers.Remove(this.observer);
-                }
+                if (disposing && this.observers.Contains(this.observer))
+                    this.observers.Remove(this.observer);
 
                 this.disposedValue = true;
             }
