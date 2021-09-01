@@ -10,23 +10,22 @@ namespace ReactiveElements
     public static class ExtensionMethods
     {
         /// <summary>
-        /// Get <see cref="Property{Tproperty}"/> generated from property in <paramref name="model"/> that implements <see cref="INotifyPropertyChanged"/>
+        /// Get <see cref="Property{TProperty}"/> instance generated from property in <paramref name="model"/> that implements <see cref="INotifyPropertyChanged"/>
         /// </summary>
         /// <typeparam name="TModel">Model that implements <see cref="INotifyPropertyChanged"/></typeparam>
         /// <typeparam name="TProperty">Selected property type</typeparam>
         /// <param name="model">Model that implements <see cref="INotifyPropertyChanged"/></param>
         /// <param name="propertySelector">Expression with selected property from current model</param>
-        /// <returns>Generated <see cref="Property{Tproperty}"/></returns>
+        /// <returns>Generated <see cref="Property{TProperty}"/>.</returns>
         /// <exception cref="ArgumentNullException" />
         /// <exception cref="ArgumentException" />
-        /// <exception cref="MemberAccessException" />
         public static Property<TProperty> GetReactiveProperty<TModel, TProperty>(this TModel model, Expression<Func<TModel, TProperty>> propertySelectionExpression)
             where TModel : INotifyPropertyChanged
         {
-            if (model == null)
+            if (model is null)
                 throw new ArgumentNullException(nameof(model));
 
-            if (propertySelectionExpression == null)
+            if (propertySelectionExpression is null)
                 throw new ArgumentNullException(nameof(propertySelectionExpression));
 
             var propertyInfo = PropertyInfoExtractor.Extract(model, propertySelectionExpression);

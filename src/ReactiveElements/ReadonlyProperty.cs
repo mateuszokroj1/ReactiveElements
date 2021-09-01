@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reactive.Linq;
+using System.Threading;
 
 using ReactiveElements.Observable;
 
@@ -13,6 +15,40 @@ namespace ReactiveElements
     [Bindable(true, BindingDirection.OneWay), DefaultBindingProperty(nameof(Value)), DefaultProperty(nameof(Value))]
     public class ReadonlyProperty<T> : IReadonlyProperty<T>
     {
+        #region Constructors
+
+        /// <summary>
+        /// Initializes <see cref="ReadonlyProperty{T}"/> with default value of <typeparamref name="T"/>.
+        /// </summary>
+        public ReadonlyProperty() : this(default!) { }
+
+        /// <summary>
+        /// Initializes <see cref="ReadonlyProperty{T}"/> with given init value.
+        /// </summary>
+        /// <param name="value">Init value</param>
+        public ReadonlyProperty(T? value)
+        {
+            this.value = value;
+            this.observableSourceUnsubscriber = null;
+        }
+
+        /// <summary>
+        /// Initializes <see cref="ReadonlyProperty{T}"/> with given <see cref="IObservable{T}"/> value source.
+        /// </summary>
+        /// <param name="observableSource">Value source</param>
+        /// <exception cref="ArgumentNullException" />
+        public ReadonlyProperty(IObservable<T> observableSource, SynchronizationContext? sourceSynchronization = null)
+        {
+            if(observableSource is null)
+                throw new ArgumentNullException(nameof(observableSource));
+
+            this.observableSourceUnsubscriber = sourceSynchronization is null
+                ? observableSource.Subscribe(this)
+                : observableSource.ObserveOn(sourceSynchronization).Subscribe(this);
+        }
+
+        #endregion
+
         #region Fields
 
         internal T? value;
@@ -23,38 +59,6 @@ namespace ReactiveElements
 
         private readonly IList<IObserver<T>> observers = new List<IObserver<T>>();
         private readonly IDisposable? observableSourceUnsubscriber;
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Initialize <see cref="ReadonlyProperty{T}"/> with default value of data type
-        /// </summary>
-        public ReadonlyProperty() : this(default(T)!) { }
-
-        /// <summary>
-        /// Initialize <see cref="ReadonlyProperty{T}"/> with given init value
-        /// </summary>
-        /// <param name="value">Init value</param>
-        public ReadonlyProperty(T? value)
-        {
-            this.value = value;
-            this.observableSourceUnsubscriber = null;
-        }
-
-        /// <summary>
-        /// Initialize <see cref="ReadonlyProperty{T}"/> with given <see cref="IObservable{T}"/> value source
-        /// </summary>
-        /// <param name="observableSource">Value source</param>
-        /// <exception cref="ArgumentNullException" />
-        public ReadonlyProperty(IObservable<T> observableSource)
-        {
-            if(observableSource is null)
-                throw new ArgumentNullException(nameof(observableSource));
-
-            this.observableSourceUnsubscriber = observableSource.Subscribe(this);
-        }
 
         #endregion
 
@@ -75,6 +79,9 @@ namespace ReactiveElements
 
         public T? GetValue() => this.value;
 
+        /// <summary>
+        /// When value is different with current, sets new value and notify observers about change.
+        /// </summary>
         protected virtual void SetValue(T? value)
         {
             if (!Equals(this.value, value))
@@ -111,7 +118,7 @@ namespace ReactiveElements
         public void OnCompleted()
         {
             foreach (var observer in this.observers)
-                observer.OnCompleted();
+                observer?.OnCompleted();
         }
 
         public void OnError(Exception error)
@@ -120,13 +127,11 @@ namespace ReactiveElements
                 observer.OnError(error);
         }
 
-        public void OnNext(T value) => SetValue(value);
+        public void OnNext(T? value) => SetValue(value);
 
         #endregion
 
         public static implicit operator T(ReadonlyProperty<T> readonlyReactiveProperty) => readonlyReactiveProperty.Value!;
-
-        public TypeCode GetTypeCode() => TypeCode.Object;
 
         #region IDisposable
 

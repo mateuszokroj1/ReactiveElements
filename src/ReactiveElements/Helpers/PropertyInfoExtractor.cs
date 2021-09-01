@@ -6,11 +6,16 @@ namespace ReactiveElements.Helpers
 {
     internal static class PropertyInfoExtractor
     {
+        /// <exception cref="ArgumentNullException" />
+        /// <exception cref="ArgumentException" />
         public static PropertyInfo Extract<TModel, TProperty>(TModel model, Expression<Func<TModel, TProperty>> propertySelectionExpression)
         {
+            if (model is null)
+                throw new ArgumentNullException(nameof(model));
+
             string propertyName;
 
-            if (propertySelectionExpression is LambdaExpression &&
+            if (propertySelectionExpression is not null &&
                 propertySelectionExpression.Body is UnaryExpression expr2 &&
                 expr2.Operand is MemberExpression expression
             )
@@ -27,7 +32,7 @@ namespace ReactiveElements.Helpers
 
             try
             {
-                return model!.GetType().GetProperty(propertyName);
+                return model.GetType().GetProperty(propertyName);
             }
             catch (MemberAccessException exc)
             {

@@ -5,21 +5,22 @@ namespace ReactiveElements.Observable
 {
     internal class Unsubscriber<T> : IDisposable
     {
-        #region Fields
-
-        private readonly IList<IObserver<T>> observers;
-        private readonly IObserver<T> observer;
-        private bool disposedValue;
-
-        #endregion
-
         #region Constructors
 
+        /// <exception cref="ArgumentNullException" />
         public Unsubscriber(IList<IObserver<T>> observers, IObserver<T> observer)
         {
             this.observers = observers ?? throw new ArgumentNullException(nameof(observers));
             this.observer = observer ?? throw new ArgumentNullException(nameof(observer));
         }
+
+        #endregion
+
+        #region Fields
+
+        private readonly IList<IObserver<T>> observers;
+        private readonly IObserver<T> observer;
+        private bool disposedValue;
 
         #endregion
 

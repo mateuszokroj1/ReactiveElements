@@ -13,12 +13,12 @@
         void SetValue(T? value);
 
         /// <summary>
-        /// Set value from object using <see cref="System.Convert"/>
-        /// When value is null and <typeparamref name="T"/> is struct, then sets default value.
+        /// <para>Set value from object using <see cref="System.Convert"/>.</para>
+        /// <para>When value is null and <typeparamref name="T"/> is <see langword="struct"/>, then sets default value.</para>
         /// </summary>
         /// <exception cref="System.InvalidCastException" />
         /// <exception cref="System.FormatException" />
         /// <exception cref="System.OverflowException" />
-        void SetValue(object value);
+        void SetValue(object? value);
     }
 }

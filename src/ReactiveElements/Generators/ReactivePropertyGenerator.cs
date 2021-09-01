@@ -10,10 +10,10 @@ namespace ReactiveElements.Generators
         public static Property<TProperty> GenerateReactivePropertyFromPropertyChangedEventModel<TModel, TProperty>(TModel model, PropertyInfo propertyInfo)
             where TModel : INotifyPropertyChanged
         {
-            if (model == null)
+            if (model is null)
                 throw new ArgumentNullException(nameof(model));
 
-            if (propertyInfo == null)
+            if (propertyInfo is null)
                 throw new ArgumentNullException(nameof(propertyInfo));
 
             var observable = System.Reactive.Linq.Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>
